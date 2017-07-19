@@ -1,10 +1,14 @@
 package org.skywalking.apm.test.agent.tool.caseassert.assertor;
 
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.skywalking.apm.test.agent.tool.caseassert.entity.SegmentRef;
 import org.skywalking.apm.test.agent.tool.caseassert.exception.AssertFailedException;
 
 public class SegmentRefAssert {
+    private static Logger logger = LogManager.getLogger(SegmentRefAssert.class);
+
     public static void assertEquals(List<SegmentRef> excepted, List<SegmentRef> actual) {
         if (excepted == null) {
             return;
@@ -24,22 +28,22 @@ public class SegmentRefAssert {
 
     private static SegmentRef findSegmentRef(List<SegmentRef> actual, SegmentRef expected) {
         for (SegmentRef segmentRef : actual) {
-            if (segmentRefEquals(expected, segmentRef)) {
-                return segmentRef;
+            try {
+                if (segmentRefEquals(expected, segmentRef)) {
+                    return segmentRef;
+                }
+            } catch (AssertFailedException e) {
+                logger.info("ref are not equal ignore this ref. \n{}", e.getMessage());
             }
         }
         return null;
     }
 
     private static boolean segmentRefEquals(SegmentRef expected, SegmentRef actual) {
-        try {
-            ExpressParser.parse(expected.entryServiceName()).assertValue(actual.entryServiceName());
-            ExpressParser.parse(expected.networkAddress()).assertValue(actual.networkAddress());
-            ExpressParser.parse(expected.parentSegmentId()).assertValue(actual.parentSegmentId());
-            ExpressParser.parse(expected.spanId()).assertValue(actual.spanId());
-            return true;
-        } catch (AssertFailedException e) {
-            return false;
-        }
+        ExpressParser.parse(expected.entryServiceName()).assertValue("entry service name", actual.entryServiceName());
+        ExpressParser.parse(expected.networkAddress()).assertValue("network address", actual.networkAddress());
+        ExpressParser.parse(expected.parentSegmentId()).assertValue("parent segment id", actual.parentSegmentId());
+        ExpressParser.parse(expected.spanId()).assertValue("span id", actual.spanId());
+        return true;
     }
 }

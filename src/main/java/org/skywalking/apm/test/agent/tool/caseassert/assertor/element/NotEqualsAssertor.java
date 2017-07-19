@@ -12,9 +12,9 @@ public class NotEqualsAssertor extends ElementAssertor {
     }
 
     @Override
-    public void assertValue(String actualValue) {
+    public void assertValue(String desc, String actualValue) {
         if (exceptedValue.equals(actualValue.trim())) {
-            throw new AssertFailedException("!=" + exceptedValue, actualValue);
+            throw new AssertFailedException(desc, " not eq " + exceptedValue, actualValue);
         }
     }
 }

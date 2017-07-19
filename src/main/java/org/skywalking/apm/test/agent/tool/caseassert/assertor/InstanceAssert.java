@@ -20,7 +20,7 @@ public class InstanceAssert {
                 throw new AssertFailedException("assert application[" + actualInstance.applicationCode() + "] instance: \n expected:" + instance.expressValue() + "\n actual: not found");
             }
 
-            ExpressParser.parse(actualInstance.expressValue()).assertValue(actualInstance.expressValue());
+            ExpressParser.parse(actualInstance.expressValue()).assertValue("registry instance", actualInstance.expressValue());
         }
     }
 

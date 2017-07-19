@@ -8,4 +8,10 @@ public interface Segment {
     List<Span> spans();
 
     List<SegmentRef> refs();
+
+    void setSegmentId(String segmentId);
+
+    void actualRefs(List<SegmentRef> actualRefs);
+
+    List<SegmentRef> actualRefs();
 }

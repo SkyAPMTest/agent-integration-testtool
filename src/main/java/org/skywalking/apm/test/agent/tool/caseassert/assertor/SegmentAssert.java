@@ -1,6 +1,8 @@
 package org.skywalking.apm.test.agent.tool.caseassert.assertor;
 
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.skywalking.apm.test.agent.tool.caseassert.entity.KeyValuePair;
 import org.skywalking.apm.test.agent.tool.caseassert.entity.LogEvent;
 import org.skywalking.apm.test.agent.tool.caseassert.entity.Segment;
@@ -10,6 +12,8 @@ import org.skywalking.apm.test.agent.tool.caseassert.entity.Span;
 import org.skywalking.apm.test.agent.tool.caseassert.exception.AssertFailedException;
 
 public class SegmentAssert {
+    private static Logger logger = LogManager.getLogger(SegmentAssert.class);
+
     public static void assertEquals(SegmentItem expected, SegmentItem actual) {
         if (expected.segments() == null) {
             return;
@@ -20,15 +24,15 @@ public class SegmentAssert {
             if (actualSegment == null) {
                 throw new AssertFailedException("assert application[" + expected.applicationCode() + "] segment: \n expected: 1 \n actual: not found");
             }
-
-            SegmentRefAssert.assertEquals(segment.refs(), actualSegment.refs());
+            segment.setSegmentId(actualSegment.segmentId());
+            segment.actualRefs(actualSegment.refs());
         }
     }
 
     private static Segment findSegment(SegmentItem actual, Segment expectedSegment) {
         for (Segment actualSegment : actual.segments()) {
-            if (spansEquals(expectedSegment.spans(), actualSegment.spans()) && segmentRefEquals(expectedSegment.refs(),
-                actualSegment.refs())) {
+            if (segmentRefEquals(expectedSegment.refs(), actualSegment.refs()) && spansEquals(expectedSegment.spans(),
+                actualSegment.spans())) {
                 return actualSegment;
             }
         }
@@ -56,10 +60,14 @@ public class SegmentAssert {
             return false;
         }
 
+        logger.info("excepted span size is equals actual span size, begin to assert span.");
         for (int index = 0; index < excepted.size(); index++) {
             Span exceptedSpan = excepted.get(index);
             Span actualSpan = actual.get(index);
-            if (!spanEquals(exceptedSpan, actualSpan)) {
+            try {
+                spanEquals(exceptedSpan, actualSpan);
+            } catch (AssertFailedException e) {
+                logger.info("span[{}] are not equal ignore this segment. \n{}", exceptedSpan.operationName(), e.getMessage());
                 return false;
             }
         }
@@ -68,25 +76,22 @@ public class SegmentAssert {
     }
 
     private static boolean spanEquals(Span excepted, Span actualSpan) {
-        try {
-            ExpressParser.parse(excepted.componentId()).assertValue(actualSpan.componentId());
-            ExpressParser.parse(excepted.componentName()).assertValue(actualSpan.componentName());
-            ExpressParser.parse(excepted.startTime()).assertValue(actualSpan.startTime());
-            ExpressParser.parse(excepted.endTime()).assertValue(actualSpan.endTime());
-            ExpressParser.parse(excepted.parentSpanId()).assertValue(actualSpan.parentSpanId());
-            ExpressParser.parse(excepted.spanId()).assertValue(actualSpan.spanId());
-            ExpressParser.parse(excepted.operationId()).assertValue(actualSpan.operationId());
-            ExpressParser.parse(excepted.peer()).assertValue(actualSpan.peer());
-            ExpressParser.parse(excepted.spanLayer()).assertValue(actualSpan.spanLayer());
-            ExpressParser.parse(excepted.peerId()).assertValue(actualSpan.peerId());
+        ExpressParser.parse(excepted.componentId()).assertValue("component id", actualSpan.componentId());
+        ExpressParser.parse(excepted.componentName()).assertValue("component name", actualSpan.componentName());
+        ExpressParser.parse(excepted.startTime()).assertValue("start time", actualSpan.startTime());
+        ExpressParser.parse(excepted.endTime()).assertValue("end time", actualSpan.endTime());
+        ExpressParser.parse(excepted.parentSpanId()).assertValue("parent span id", actualSpan.parentSpanId());
+        ExpressParser.parse(excepted.spanId()).assertValue("span id", actualSpan.spanId());
+        ExpressParser.parse(excepted.operationId()).assertValue("operation id", actualSpan.operationId());
+        ExpressParser.parse(excepted.peer()).assertValue("peer", actualSpan.peer());
+        ExpressParser.parse(excepted.spanLayer()).assertValue("span layer", actualSpan.spanLayer());
+        ExpressParser.parse(excepted.peerId()).assertValue("peer id", actualSpan.peerId());
 
-            tagsEquals(excepted.tags(), actualSpan.tags());
-            logsEquals(excepted.logs(), actualSpan.logs());
+        tagsEquals(excepted.tags(), actualSpan.tags());
+        logsEquals(excepted.logs(), actualSpan.logs());
 
-            return true;
-        } catch (AssertFailedException e) {
-            return false;
-        }
+        return true;
+
     }
 
     private static void tagsEquals(List<KeyValuePair> excepted, List<KeyValuePair> actual) {

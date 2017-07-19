@@ -11,4 +11,8 @@ public class AssertFailedException extends RuntimeException {
     public AssertFailedException(String message) {
         super(message);
     }
+
+    public AssertFailedException(String desc, String expected, String actual) {
+        super(desc + ": \n expected: " + expected + "\n actual: " + actual);
+    }
 }

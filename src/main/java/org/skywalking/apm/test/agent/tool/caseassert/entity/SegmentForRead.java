@@ -8,6 +8,7 @@ public class SegmentForRead implements Segment {
     private String segmentId;
     private List<SpanForRead> spans;
     private List<SegmentRefForRead> refs;
+    private List<SegmentRef> actualRefs = new ArrayList<>();
 
     @Override
     public String segmentId() {
@@ -266,6 +267,15 @@ public class SegmentForRead implements Segment {
 
     public void setSegmentId(String segmentId) {
         this.segmentId = segmentId;
+    }
+
+    @Override
+    public void actualRefs(List<SegmentRef> actualRefs) {
+        this.actualRefs = actualRefs;
+    }
+
+    @Override public List<SegmentRef> actualRefs() {
+        return actualRefs;
     }
 
     public void setSpans(List<SpanForRead> spans) {

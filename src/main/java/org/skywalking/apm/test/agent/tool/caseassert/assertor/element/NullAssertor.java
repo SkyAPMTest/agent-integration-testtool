@@ -11,9 +11,9 @@ public class NullAssertor extends ElementAssertor {
     }
 
     @Override
-    public void assertValue(String actualValue) {
+    public void assertValue(String desc, String actualValue) {
         if (actualValue != null && actualValue.length() > 0) {
-            throw new AssertFailedException("null", actualValue);
+            throw new AssertFailedException(desc, "null", actualValue);
         }
     }
 }

@@ -11,9 +11,9 @@ public class NotNullAssertor extends ElementAssertor {
     }
 
     @Override
-    public void assertValue(String actualValue) {
+    public void assertValue(String desc, String actualValue) {
         if (actualValue == null) {
-            throw new AssertFailedException("not null", actualValue);
+            throw new AssertFailedException(desc, "not null", actualValue);
         }
     }
 }

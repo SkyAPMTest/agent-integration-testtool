@@ -9,7 +9,7 @@ public class NoopAssertor extends ElementAssertor {
     }
 
     @Override
-    public void assertValue(String actualValue) {
+    public void assertValue(String desc, String actualValue) {
 
     }
 }

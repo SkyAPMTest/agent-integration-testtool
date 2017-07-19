@@ -77,7 +77,7 @@ public class Report {
     }
 
     public void generate(String path) throws IOException, TemplateException {
-        File reportFile = new File(path, "report.md");
+        File reportFile = new File(path, "README.md");
         if (!reportFile.getParentFile().exists()) {
             reportFile.getParentFile().mkdirs();
         }

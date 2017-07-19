@@ -18,7 +18,7 @@ public class ApplicationAssert {
                 throw new AssertFailedException(application.applicationCode(), "null");
             }
 
-            ExpressParser.parse(application.expressValue()).assertValue(actualApplication.expressValue());
+            ExpressParser.parse(application.expressValue()).assertValue("registry application", actualApplication.expressValue());
         }
     }
 

@@ -10,5 +10,5 @@ public abstract class ElementAssertor {
 
     protected String exceptedValue;
 
-    public abstract void assertValue(String actualValue);
+    public abstract void assertValue(String desc, String actualValue);
 }

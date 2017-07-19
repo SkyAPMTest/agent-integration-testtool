@@ -12,9 +12,9 @@ public class EqualsAssertor extends ElementAssertor {
     }
 
     @Override
-    public void assertValue(String actualValue) {
+    public void assertValue(String desc, String actualValue) {
         if (!exceptedValue.equals(actualValue)) {
-            throw new AssertFailedException("==" + exceptedValue, actualValue);
+            throw new AssertFailedException(desc, exceptedValue, actualValue);
         }
     }
 }

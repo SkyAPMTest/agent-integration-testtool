@@ -12,9 +12,9 @@ public class GreatThanAssertor extends ElementAssertor {
     }
 
     @Override
-    public void assertValue(String actualValue) {
+    public void assertValue(String desc, String actualValue) {
         if (Long.parseLong(actualValue) <= Long.parseLong(exceptedValue)) {
-            throw new AssertFailedException(">" + exceptedValue, actualValue);
+            throw new AssertFailedException(desc," gt " + exceptedValue, actualValue);
         }
     }
 }

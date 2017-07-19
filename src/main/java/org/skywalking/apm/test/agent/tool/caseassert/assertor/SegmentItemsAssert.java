@@ -21,22 +21,25 @@ public class SegmentItemsAssert {
         }
 
         for (SegmentItem item : expected) {
-            if (item.segments() == null) {
-                continue;
-            }
-            for (Segment segment : item.segments()) {
-                convertParentSegmentId(segment, actual);
-            }
-        }
-
-        for (SegmentItem item : expected) {
             SegmentItem actualSegmentItem = findSegmentItem(actual, item.applicationCode());
             if (actualSegmentItem == null) {
                 throw new AssertFailedException("assert application[" + item.applicationCode() + "] segmentItems: \n expected: has " + item.segments() + " \n actual: not found");
             }
 
+
             assertSegmentSize(item.segmentSize(), actualSegmentItem.segmentSize());
             SegmentAssert.assertEquals(item, actualSegmentItem);
+        }
+
+        for (SegmentItem item : expected) {
+            if (item.segments() == null) {
+                continue;
+            }
+
+            for (Segment segment : item.segments()) {
+                convertParentSegmentId(segment, expected);
+                SegmentRefAssert.assertEquals(segment.refs(), segment.actualRefs());
+            }
         }
     }
 
@@ -55,7 +58,7 @@ public class SegmentItemsAssert {
         if (expected != null) {
             return;
         }
-        ExpressParser.parse(expected).assertValue(actual);
+        ExpressParser.parse(expected).assertValue("segment size", actual);
     }
 
     private static SegmentItem findSegmentItem(List<SegmentItem> actual, String applicationCode) {
