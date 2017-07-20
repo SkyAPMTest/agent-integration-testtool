@@ -38,6 +38,6 @@ public class ExpressParser {
             }
         }
 
-        throw new AssertFailedException("unsupport express");
+        return new EqualsAssertor(express);
     }
 }

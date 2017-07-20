@@ -100,7 +100,7 @@ public class SegmentAssert {
         }
 
         for (int index = 0; index < excepted.size(); index++) {
-            keyValuePairEquals(excepted.get(index), actual.get(index));
+            keyValuePairEquals("tags", excepted.get(index), actual.get(index));
         }
     }
 
@@ -124,17 +124,16 @@ public class SegmentAssert {
         }
 
         for (int index = 0; index < exceptedKey.size(); index++) {
-            keyValuePairEquals(exceptedKey.get(index), actualKey.get(index));
+            keyValuePairEquals("log event ", exceptedKey.get(index), actualKey.get(index));
         }
     }
 
-    private static void keyValuePairEquals(KeyValuePair excepted, KeyValuePair actual) {
+    private static void keyValuePairEquals(String desc, KeyValuePair excepted, KeyValuePair actual) {
         if (!excepted.key().equals(actual.key())) {
             throw new AssertFailedException("assert key of keyValuePair \nexcepted: " + excepted.key() + "\nactual: " + actual.key());
         }
-        if (!excepted.value().equals(actual.value())) {
-            throw new AssertFailedException("assert value of keyValuePair\nexcepted: " + excepted.value() + "\nactual: " + actual.value());
-        }
+
+        ExpressParser.parse(excepted.value()).assertValue(desc, actual.value());
     }
 
 }
