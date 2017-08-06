@@ -30,49 +30,127 @@ public class SegmentForRead implements Segment {
     }
 
     public static class SegmentRefForRead implements SegmentRef {
-        private String spanId;
-        private String parentSegmentId;
+        private String parentServiceId;
+        private String parentServiceName;
+        private String networkAddressId;
+        private String entryServiceId;
+        private String refType;
+        private String parentSpanId;
+        private String parentTraceSegmentId;
+        private String parentApplicationInstanceId;
         private String networkAddress;
         private String entryServiceName;
 
-        public String getSpanId() {
-            return spanId;
+        public String getParentServiceId() {
+            return parentServiceId;
         }
 
-        public String getParentSegmentId() {
-            return parentSegmentId;
+        public void setParentServiceId(String parentServiceId) {
+            this.parentServiceId = parentServiceId;
+        }
+
+        public String getParentServiceName() {
+            return parentServiceName;
+        }
+
+        public void setParentServiceName(String parentServiceName) {
+            this.parentServiceName = parentServiceName;
+        }
+
+        public String getNetworkAddressId() {
+            return networkAddressId;
+        }
+
+        public void setNetworkAddressId(String networkAddressId) {
+            this.networkAddressId = networkAddressId;
+        }
+
+        public String getEntryServiceId() {
+            return entryServiceId;
+        }
+
+        public void setEntryServiceId(String entryServiceId) {
+            this.entryServiceId = entryServiceId;
+        }
+
+        public String getRefType() {
+            return refType;
+        }
+
+        public void setRefType(String refType) {
+            this.refType = refType;
+        }
+
+        public String getParentSpanId() {
+            return parentSpanId;
+        }
+
+        public void setParentSpanId(String parentSpanId) {
+            this.parentSpanId = parentSpanId;
+        }
+
+        public String getParentTraceSegmentId() {
+            return parentTraceSegmentId;
+        }
+
+        public void setParentTraceSegmentId(String parentTraceSegmentId) {
+            this.parentTraceSegmentId = parentTraceSegmentId;
+        }
+
+        public String getParentApplicationInstanceId() {
+            return parentApplicationInstanceId;
+        }
+
+        public void setParentApplicationInstanceId(String parentApplicationInstanceId) {
+            this.parentApplicationInstanceId = parentApplicationInstanceId;
         }
 
         public String getNetworkAddress() {
             return networkAddress;
         }
 
-        public String getEntryServiceName() {
-            return entryServiceName;
-        }
-
-        public void setSpanId(String spanId) {
-            this.spanId = spanId;
-        }
-
-        public void setParentSegmentId(String parentSegmentId) {
-            this.parentSegmentId = parentSegmentId;
-        }
-
         public void setNetworkAddress(String networkAddress) {
             this.networkAddress = networkAddress;
+        }
+
+        public String getEntryServiceName() {
+            return entryServiceName;
         }
 
         public void setEntryServiceName(String entryServiceName) {
             this.entryServiceName = entryServiceName;
         }
 
-        @Override public String spanId() {
-            return spanId;
+        @Override public String parentServiceId() {
+            return parentServiceId;
         }
 
-        @Override public String parentSegmentId() {
-            return parentSegmentId;
+        @Override public String parentServiceName() {
+            return parentServiceName;
+        }
+
+        @Override public String networkAddressId() {
+            return networkAddressId;
+        }
+
+        @Override public String entryServiceId() {
+            return entryServiceId;
+        }
+
+        @Override public String refType() {
+            return refType;
+        }
+
+        @Override public String parentSpanId() {
+            return parentSpanId;
+        }
+
+        @Override public String parentTraceSegmentId() {
+            return parentTraceSegmentId;
+        }
+
+        @Override public String parentApplicationInstanceId() {
+            return parentApplicationInstanceId;
         }
 
         @Override public String networkAddress() {
@@ -81,6 +159,10 @@ public class SegmentForRead implements Segment {
 
         @Override public String entryServiceName() {
             return entryServiceName;
+        }
+
+        @Override public void parentTraceSegmentId(String parentTraceSegmentId) {
+            this.parentTraceSegmentId = parentTraceSegmentId;
         }
     }
 

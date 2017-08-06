@@ -57,6 +57,7 @@ public class SegmentAssert {
         }
 
         if (actual == null || excepted.size() != actual.size()) {
+            logger.info("excepted span size are not equals actual span size, ignore this segment.");
             return false;
         }
 

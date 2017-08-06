@@ -5,13 +5,26 @@ package org.skywalking.apm.test.agent.tool.caseassert.entity;
  */
 public interface SegmentRef {
 
-    String spanId();
+    String parentServiceId();
 
-    String parentSegmentId();
+    String parentServiceName();
 
-    void setParentSegmentId(String segmentId);
+    String networkAddressId();
+
+    String entryServiceId();
+
+    String refType();
+
+    String parentSpanId();
+
+    String parentTraceSegmentId();
+
+    String parentApplicationInstanceId();
 
     String networkAddress();
 
     String entryServiceName();
+
+    void parentTraceSegmentId(String parentTraceSegmentId);
+
 }

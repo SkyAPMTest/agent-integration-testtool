@@ -19,7 +19,7 @@ public interface Data {
             try {
                 return loadData(new FileInputStream(file));
             } catch (Exception e) {
-                throw new RuntimeException("Failed to find file[" + file.getAbsolutePath() + "]");
+                throw new RuntimeException("Failed to parse file[" + file.getAbsolutePath() + "]");
             }
         }
 
