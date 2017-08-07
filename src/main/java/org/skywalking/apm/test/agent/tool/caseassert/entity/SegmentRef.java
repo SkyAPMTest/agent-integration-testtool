@@ -27,4 +27,5 @@ public interface SegmentRef {
 
     void parentTraceSegmentId(String parentTraceSegmentId);
 
+    String entryApplicationInstanceId();
 }

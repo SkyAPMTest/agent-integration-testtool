@@ -50,6 +50,7 @@ public class SegmentRefAssert {
         ExpressParser.parse(expected.parentServiceId()).assertValue("parent service id", actual.parentServiceId());
         ExpressParser.parse(expected.parentServiceName()).assertValue("parent service name", actual.parentServiceName());
         ExpressParser.parse(expected.refType()).assertValue("ref type", actual.refType());
+        ExpressParser.parse(expected.entryApplicationInstanceId()).assertValue("entry application instance id", actual.entryApplicationInstanceId());
         return true;
     }
 }

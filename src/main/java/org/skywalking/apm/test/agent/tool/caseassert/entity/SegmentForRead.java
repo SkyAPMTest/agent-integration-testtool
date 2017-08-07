@@ -40,6 +40,7 @@ public class SegmentForRead implements Segment {
         private String parentApplicationInstanceId;
         private String networkAddress;
         private String entryServiceName;
+        private String entryApplicationInstanceId;
 
         public String getParentServiceId() {
             return parentServiceId;
@@ -121,6 +122,14 @@ public class SegmentForRead implements Segment {
             this.entryServiceName = entryServiceName;
         }
 
+        public String getEntryApplicationInstanceId() {
+            return entryApplicationInstanceId;
+        }
+
+        public void setEntryApplicationInstanceId(String entryApplicationInstanceId) {
+            this.entryApplicationInstanceId = entryApplicationInstanceId;
+        }
+
         @Override public String parentServiceId() {
             return parentServiceId;
         }
@@ -163,6 +172,10 @@ public class SegmentForRead implements Segment {
 
         @Override public void parentTraceSegmentId(String parentTraceSegmentId) {
             this.parentTraceSegmentId = parentTraceSegmentId;
+        }
+
+        @Override public String entryApplicationInstanceId() {
+            return entryApplicationInstanceId;
         }
     }
 
