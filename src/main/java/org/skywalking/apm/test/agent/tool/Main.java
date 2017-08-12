@@ -22,6 +22,7 @@ public class Main {
         String agentCommit = System.getProperty("agentCommit");
         String testCasePath = System.getProperty("testCasePath");
         String reportFilePath = System.getProperty("reportFilePath");
+        String testCasesStr = System.getProperty("testCases");
         Report report = new Report(testDate, agentBranch, agentCommit);
 
         File casesPath = new File(testCasePath);
@@ -29,10 +30,10 @@ public class Main {
             report.setStatus(Status.ERROR);
         }
 
+        String[] testCases = testCasesStr.split(",");
         // 校验所有插件
-        File[] directories = new File(testCasePath).listFiles(file -> file.isDirectory() && !file.isHidden());
-
-        for (File casePath : directories) {
+        for (String aCase : testCases) {
+            File casePath = new File(testCasePath, aCase);
             TestCaseDesc caseDesc = TestCaseDesc.Parser.parse(new File(casePath, "testcase.desc"));
             TestCase testCase = new TestCase(caseDesc.getCaseName(), caseDesc.getComponents());
             try {

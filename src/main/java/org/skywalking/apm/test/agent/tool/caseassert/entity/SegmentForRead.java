@@ -186,7 +186,7 @@ public class SegmentForRead implements Segment {
         private String spanId;
         private String spanLayer;
         private List<Map<String, String>> tags;
-        private List<LogEventForRead> logs;
+        private List<Map<String, List<Map<String, String>>>> logs;
         private String startTime;
         private String endTime;
         private String componentId;
@@ -220,7 +220,7 @@ public class SegmentForRead implements Segment {
             this.tags = tags;
         }
 
-        public void setLogs(List<LogEventForRead> logs) {
+        public void setLogs(List<Map<String, List<Map<String, String>>>> logs) {
             this.logs = logs;
         }
 
@@ -292,10 +292,11 @@ public class SegmentForRead implements Segment {
                 return null;
             }
             List<LogEvent> result = new ArrayList<>();
-            for (LogEventForRead log : logs) {
+            for (Map<String, List<Map<String, String>>> log : logs) {
+                List<Map<String, String>> events = log.get("logEvent");
                 LogEvent.Impl logEvent = new LogEvent.Impl();
-                for (Map<String, String> tag : log.getLogEvent()) {
-                    logEvent.add(tag.get("key"), tag.get("value"));
+                for (Map<String, String> event : events) {
+                    logEvent.add(event.get("key"), event.get("value"));
                 }
                 result.add(logEvent);
             }
@@ -336,7 +337,7 @@ public class SegmentForRead implements Segment {
         }
     }
 
-    static class LogEventForRead {
+    public static class LogEventForRead {
         private List<Map<String, String>> logEvent;
 
         public List<Map<String, String>> getLogEvent() {
