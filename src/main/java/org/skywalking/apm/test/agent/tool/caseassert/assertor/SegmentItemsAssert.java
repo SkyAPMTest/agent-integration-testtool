@@ -55,7 +55,7 @@ public class SegmentItemsAssert {
     }
 
     private static void assertSegmentSize(String expected, String actual) {
-        if (expected != null) {
+        if (expected == null) {
             return;
         }
         ExpressParser.parse(expected).assertValue("segment size", actual);

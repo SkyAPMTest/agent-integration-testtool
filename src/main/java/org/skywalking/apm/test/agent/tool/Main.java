@@ -33,6 +33,9 @@ public class Main {
         String[] testCases = testCasesStr.split(",");
         // 校验所有插件
         for (String aCase : testCases) {
+            if (aCase == null || aCase.length() == 0) {
+                continue;
+            }
             File casePath = new File(testCasePath, aCase);
             TestCaseDesc caseDesc = TestCaseDesc.Parser.parse(new File(casePath, "testcase.desc"));
             TestCase testCase = new TestCase(caseDesc.getCaseName(), caseDesc.getComponents());
