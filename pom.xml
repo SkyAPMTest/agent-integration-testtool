@@ -4,7 +4,7 @@
 
     <groupId>org.skywalking</groupId>
     <artifactId>skywalking-autotest</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>3.2.6-2017</version>
     <packaging>jar</packaging>
 
     <name>skywalking-autotest</name>

@@ -21,7 +21,7 @@ public class SegmentRefAssert {
         for (SegmentRef ref : excepted) {
             SegmentRef actualRef = findSegmentRef(actual, ref);
             if (actualRef == null) {
-                throw new AssertFailedException("segment refs: \n expected: 1\n actual: not found");
+                throw new AssertFailedException("segment refs: \n expected count : 1\n actual: 0");
             }
         }
     }

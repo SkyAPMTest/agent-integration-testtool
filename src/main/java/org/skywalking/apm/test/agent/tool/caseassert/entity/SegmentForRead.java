@@ -7,7 +7,6 @@ import java.util.Map;
 public class SegmentForRead implements Segment {
     private String segmentId;
     private List<SpanForRead> spans;
-    private List<SegmentRefForRead> refs;
     private List<SegmentRef> actualRefs = new ArrayList<>();
 
     @Override
@@ -20,13 +19,6 @@ public class SegmentForRead implements Segment {
             return null;
         }
         return new ArrayList<>(spans);
-    }
-
-    @Override public List<SegmentRef> refs() {
-        if (refs == null) {
-            return null;
-        }
-        return new ArrayList<>(refs);
     }
 
     public static class SegmentRefForRead implements SegmentRef {
@@ -177,6 +169,7 @@ public class SegmentForRead implements Segment {
         @Override public String entryApplicationInstanceId() {
             return entryApplicationInstanceId;
         }
+
     }
 
     public static class SpanForRead implements Span {
@@ -187,6 +180,8 @@ public class SegmentForRead implements Segment {
         private String spanLayer;
         private List<Map<String, String>> tags;
         private List<Map<String, List<Map<String, String>>>> logs;
+        private List<SegmentRefForRead> refs;
+        private List<SegmentRef> actualRefs;
         private String startTime;
         private String endTime;
         private String componentId;
@@ -335,6 +330,21 @@ public class SegmentForRead implements Segment {
         @Override public String peerId() {
             return peerId;
         }
+
+        @Override public List<SegmentRef> refs() {
+            if (refs == null) {
+                return null;
+            }
+            return new ArrayList<>(refs);
+        }
+
+        @Override public void setActualRefs(List<SegmentRef> refs) {
+            this.actualRefs = refs;
+        }
+
+        @Override public List<SegmentRef> actualRefs() {
+            return actualRefs;
+        }
     }
 
     public static class LogEventForRead {
@@ -357,28 +367,11 @@ public class SegmentForRead implements Segment {
         return spans;
     }
 
-    public List<SegmentRefForRead> getRefs() {
-        return refs;
-    }
-
-    public void setSegmentId(String segmentId) {
+    @Override public void setSegmentId(String segmentId) {
         this.segmentId = segmentId;
-    }
-
-    @Override
-    public void actualRefs(List<SegmentRef> actualRefs) {
-        this.actualRefs = actualRefs;
-    }
-
-    @Override public List<SegmentRef> actualRefs() {
-        return actualRefs;
     }
 
     public void setSpans(List<SpanForRead> spans) {
         this.spans = spans;
-    }
-
-    public void setRefs(List<SegmentRefForRead> refs) {
-        this.refs = refs;
     }
 }

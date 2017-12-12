@@ -32,4 +32,10 @@ public interface Span {
     String peer();
 
     String peerId();
+
+    List<SegmentRef> refs();
+
+    void setActualRefs(List<SegmentRef> refs);
+
+    List<SegmentRef> actualRefs();
 }

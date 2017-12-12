@@ -22,33 +22,19 @@ public class SegmentAssert {
         for (Segment segment : expected.segments()) {
             Segment actualSegment = findSegment(actual, segment);
             if (actualSegment == null) {
-                throw new AssertFailedException("assert application[" + expected.applicationCode() + "] segment: \n expected: 1 \n actual: not found");
+                throw new AssertFailedException("assert application[" + expected.applicationCode() + "] segment: \n expected count : 1 \n actual: 0");
             }
             segment.setSegmentId(actualSegment.segmentId());
-            segment.actualRefs(actualSegment.refs());
         }
     }
 
     private static Segment findSegment(SegmentItem actual, Segment expectedSegment) {
         for (Segment actualSegment : actual.segments()) {
-            if (segmentRefEquals(expectedSegment.refs(), actualSegment.refs()) && spansEquals(expectedSegment.spans(),
-                actualSegment.spans())) {
+            if (spansEquals(expectedSegment.spans(), actualSegment.spans())) {
                 return actualSegment;
             }
         }
         return null;
-    }
-
-    private static boolean segmentRefEquals(List<SegmentRef> excepted, List<SegmentRef> actual) {
-        if (excepted == null) {
-            return true;
-        }
-
-        if (actual == null || excepted.size() != actual.size()) {
-            return false;
-        }
-
-        return true;
     }
 
     private static boolean spansEquals(List<Span> excepted, List<Span> actual) {
@@ -87,12 +73,19 @@ public class SegmentAssert {
         ExpressParser.parse(excepted.peer()).assertValue("peer", actualSpan.peer());
         ExpressParser.parse(excepted.spanLayer()).assertValue("span layer", actualSpan.spanLayer());
         ExpressParser.parse(excepted.peerId()).assertValue("peer id", actualSpan.peerId());
-
         tagsEquals(excepted.tags(), actualSpan.tags());
         logsEquals(excepted.logs(), actualSpan.logs());
 
+        refEquals(excepted.refs(), actualSpan.refs());
+        excepted.setActualRefs(actualSpan.refs());
         return true;
 
+    }
+
+    private static void refEquals(List<SegmentRef> excepted, List<SegmentRef> actual) {
+        if (actual == null || excepted.size() != actual.size()) {
+            throw new AssertFailedException("ref is not equals");
+        }
     }
 
     private static void tagsEquals(List<KeyValuePair> excepted, List<KeyValuePair> actual) {

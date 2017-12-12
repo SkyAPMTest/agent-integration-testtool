@@ -1,11 +1,13 @@
 package org.skywalking.apm.test.agent.tool.caseassert.assertor;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.skywalking.apm.test.agent.tool.caseassert.entity.Segment;
 import org.skywalking.apm.test.agent.tool.caseassert.entity.SegmentItem;
 import org.skywalking.apm.test.agent.tool.caseassert.entity.SegmentRef;
+import org.skywalking.apm.test.agent.tool.caseassert.entity.Span;
 import org.skywalking.apm.test.agent.tool.caseassert.exception.AssertFailedException;
 
 /**
@@ -38,19 +40,28 @@ public class SegmentItemsAssert {
 
             for (Segment segment : item.segments()) {
                 convertParentSegmentId(segment, expected);
-                SegmentRefAssert.assertEquals(segment.refs(), segment.actualRefs());
+
+                for (Span span : segment.spans()) {
+                    if (span.refs() == null || span.refs().size() == 0){
+                        continue;
+                    }
+                    SegmentRefAssert.assertEquals(span.refs(), span.actualRefs());
+                }
+
             }
         }
     }
 
     private static void convertParentSegmentId(Segment segment, List<SegmentItem> actual) {
-        if (segment.refs() == null) {
-            return;
-        }
+        for (Span span : segment.spans()) {
+            if (span.refs() == null || span.refs().size() == 0){
+                continue;
+            }
 
-        for (SegmentRef ref : segment.refs()) {
-            String actualParentSegmentId = ParentSegmentIdExpressParser.parse(ref.parentTraceSegmentId(), actual);
-            ref.parentTraceSegmentId(actualParentSegmentId);
+            for (SegmentRef ref : span.refs()) {
+                String actualParentSegmentId = ParentSegmentIdExpressParser.parse(ref.parentTraceSegmentId(), actual);
+                ref.parentTraceSegmentId(actualParentSegmentId);
+            }
         }
     }
 
