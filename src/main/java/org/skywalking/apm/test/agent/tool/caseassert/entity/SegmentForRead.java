@@ -273,7 +273,7 @@ public class SegmentForRead implements Segment {
 
         @Override public List<KeyValuePair> tags() {
             if (tags == null) {
-                return null;
+                return new ArrayList<>();
             }
             List<KeyValuePair> result = new ArrayList<>();
             for (Map<String, String> tag : tags) {
@@ -284,7 +284,7 @@ public class SegmentForRead implements Segment {
 
         @Override public List<LogEvent> logs() {
             if (logs == null) {
-                return null;
+                return new ArrayList<>();
             }
             List<LogEvent> result = new ArrayList<>();
             for (Map<String, List<Map<String, String>>> log : logs) {

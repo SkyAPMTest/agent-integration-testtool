@@ -83,6 +83,10 @@ public class SegmentAssert {
     }
 
     private static void refEquals(List<SegmentRef> excepted, List<SegmentRef> actual) {
+        if (excepted == null) {
+            return;
+        }
+
         if (actual == null || excepted.size() != actual.size()) {
             throw new AssertFailedException("ref is not equals");
         }
