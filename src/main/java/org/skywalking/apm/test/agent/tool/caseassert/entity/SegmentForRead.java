@@ -37,12 +37,12 @@ public class SegmentForRead implements Segment {
         }
 
         public SegmentRefForRead(Map<String, Object> ref) {
-            this.refType = ref.get("refType").toString();
             this.networkAddress = ref.get("networkAddress").toString();
             this.entryServiceName = ref.get("entryServiceName").toString();
             this.parentServiceName = ref.get("parentServiceName").toString();
             this.parentTraceSegmentId = ref.get("parentTraceSegmentId").toString();
             this.entryApplicationInstanceId = ref.get("entryApplicationInstanceId").toString();
+            this.refType = ref.get("refType") == null ? null : ref.get("refType").toString();
             this.parentSpanId = ref.get("parentSpanId") == null ? null : ref.get("parentSpanId").toString();
             this.entryServiceId = ref.get("entryServiceId") == null ? null : ref.get("entryServiceId").toString();
             this.parentServiceId = ref.get("parentServiceId") == null ? null : ref.get("parentServiceId").toString();
