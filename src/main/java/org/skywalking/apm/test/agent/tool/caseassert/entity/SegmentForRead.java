@@ -33,6 +33,23 @@ public class SegmentForRead implements Segment {
         private String entryServiceName;
         private String entryApplicationInstanceId;
 
+        public SegmentRefForRead() {
+        }
+
+        public SegmentRefForRead(Map<String, Object> ref) {
+            this.refType = ref.get("refType").toString();
+            this.networkAddress = ref.get("networkAddress").toString();
+            this.entryServiceName = ref.get("entryServiceName").toString();
+            this.parentServiceName = ref.get("parentServiceName").toString();
+            this.parentTraceSegmentId = ref.get("parentTraceSegmentId").toString();
+            this.entryApplicationInstanceId = ref.get("entryApplicationInstanceId").toString();
+            this.parentSpanId = ref.get("parentSpanId") == null ? null : ref.get("parentSpanId").toString();
+            this.entryServiceId = ref.get("entryServiceId") == null ? null : ref.get("entryServiceId").toString();
+            this.parentServiceId = ref.get("parentServiceId") == null ? null : ref.get("parentServiceId").toString();
+            this.networkAddressId = ref.get("networkAddressId") == null ? null : ref.get("networkAddressId").toString();
+            this.parentApplicationInstanceId = ref.get("parentApplicationInstanceId") == null ? null : ref.get("parentApplicationInstanceId").toString();
+        }
+
         public String getParentServiceId() {
             return parentServiceId;
         }
@@ -179,7 +196,8 @@ public class SegmentForRead implements Segment {
         private String spanLayer;
         private List<Map<String, String>> tags;
         private List<Map<String, List<Map<String, String>>>> logs;
-        private List<SegmentRefForRead> refs;
+        private List<Map<String, Object>> refs;
+        private List<SegmentRef> formatedRefs;
         private List<SegmentRef> actualRefs;
         private String startTime;
         private String endTime;
@@ -251,7 +269,7 @@ public class SegmentForRead implements Segment {
         }
 
         public void setRefs(
-            List<SegmentRefForRead> refs) {
+            List<Map<String, Object>> refs) {
             this.refs = refs;
         }
 
@@ -336,10 +354,15 @@ public class SegmentForRead implements Segment {
         }
 
         @Override public List<SegmentRef> refs() {
-            if (refs == null) {
-                return null;
+            if (formatedRefs == null && refs != null) {
+                List<SegmentRef> segmentRefs = new ArrayList<>();
+                for (Map<String, Object> ref : refs) {
+                    segmentRefs.add(new SegmentRefForRead(ref));
+                }
+
+                this.formatedRefs = segmentRefs;
             }
-            return new ArrayList<>(refs);
+            return formatedRefs;
         }
 
         @Override public void setActualRefs(List<SegmentRef> refs) {
