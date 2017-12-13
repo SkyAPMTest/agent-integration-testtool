@@ -7,7 +7,6 @@ import java.util.Map;
 public class SegmentForRead implements Segment {
     private String segmentId;
     private List<SpanForRead> spans;
-    private List<SegmentRef> actualRefs = new ArrayList<>();
 
     @Override
     public String segmentId() {
@@ -249,6 +248,11 @@ public class SegmentForRead implements Segment {
 
         public void setPeerId(String peerId) {
             this.peerId = peerId;
+        }
+
+        public void setRefs(
+            List<SegmentRefForRead> refs) {
+            this.refs = refs;
         }
 
         @Override public String operationName() {
