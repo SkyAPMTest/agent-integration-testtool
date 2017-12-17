@@ -7,7 +7,7 @@ import org.skywalking.apm.test.agent.tool.caseassert.assertor.DataAssert;
 import org.skywalking.apm.test.agent.tool.caseassert.entity.Data;
 import org.skywalking.apm.test.agent.tool.caseassert.exception.AssertFailedException;
 import org.skywalking.apm.test.agent.tool.entity.Report;
-import org.skywalking.apm.test.agent.tool.entity.Status;
+import org.skywalking.apm.test.agent.tool.entity.SupportedStatus;
 import org.skywalking.apm.test.agent.tool.entity.TestCase;
 import org.skywalking.apm.test.agent.tool.entity.TestCaseDesc;
 
@@ -27,7 +27,7 @@ public class Main {
 
         File casesPath = new File(testCasePath);
         if (!casesPath.exists()) {
-            report.setStatus(Status.ERROR);
+            report.setStatus(SupportedStatus.ERROR);
         }
 
         String[] testCases = testCasesStr.split(",");
@@ -38,31 +38,25 @@ public class Main {
             }
             File casePath = new File(testCasePath, aCase);
             TestCaseDesc caseDesc = TestCaseDesc.Parser.parse(new File(casePath, "testcase.desc"));
-            TestCase testCase = new TestCase(caseDesc.getCaseName(), caseDesc.getComponents());
+            TestCase testCase = new TestCase(caseDesc.getTestFramework(), caseDesc.getTestVersion(), caseDesc.getCooperativeFrameworks());
             try {
-                if (caseDesc.isValidate()) {
-                    logger.info("start to assert data of test case[{}]", caseDesc.getCaseName());
-                    File actualData = new File(casePath, "actualData.yaml");
-                    File expectedData = new File(casePath, "expectedData.yaml");
-                    if (actualData.exists() && expectedData.exists()) {
-                        try {
-                            DataAssert.assertEquals(Data.Loader.loadData(expectedData), Data.Loader.loadData(actualData));
-                            testCase.setStatus(Status.PASSING);
-                        } catch (AssertFailedException e) {
-                            logger.error("assert failed.\n{}", e.getMessage());
-                            testCase.setStatus(Status.FAILED);
-                        }
-                    } else {
-                        logger.error("assert failed. because actual data {} and expected data {}", actualData.exists() ? "founded" : "not founded", actualData.exists() ? "founded" : "not founded");
+                logger.info("start to assert data of test case[{}]", testCase.getCaseName());
+                File actualData = new File(casePath, "actualData.yaml");
+                File expectedData = new File(casePath, "expectedData.yaml");
+                if (actualData.exists() && expectedData.exists()) {
+                    try {
+                        DataAssert.assertEquals(Data.Loader.loadData(expectedData), Data.Loader.loadData(actualData));
+                        testCase.setStatus(SupportedStatus.SUPPORTED);
+                    } catch (AssertFailedException e) {
+                        logger.error("assert failed.\n{}", e.getMessage());
+                        testCase.setStatus(SupportedStatus.FAILED);
                     }
+                } else {
+                    logger.error("assert failed. because actual data {} and expected data {}", actualData.exists() ? "founded" : "not founded", actualData.exists() ? "founded" : "not founded");
                 }
             } catch (Exception e) {
-                logger.error("assert test case {} failed.", caseDesc.getCaseName(), e);
-                testCase.setStatus(Status.ERROR);
-            }
-
-            if (testCase.faileOrError()) {
-                report.setStatus(Status.FAILED);
+                logger.error("assert test case {} failed.", testCase.getCaseName(), e);
+                testCase.setStatus(SupportedStatus.ERROR);
             }
 
             report.addTestCase(testCase);
@@ -70,7 +64,8 @@ public class Main {
 
         //生成报告
         try {
-            report.generate(reportFilePath);
+            report.verifyAndSetStatus();
+            report.generateReport(reportFilePath);
         } catch (Exception e) {
             logger.error("Failed to generate report file", e);
         }

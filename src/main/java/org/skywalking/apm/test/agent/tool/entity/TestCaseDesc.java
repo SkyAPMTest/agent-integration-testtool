@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.skywalking.apm.test.agent.tool.entity;
 
 import java.io.File;
@@ -11,14 +28,12 @@ import org.apache.logging.log4j.Logger;
 
 public class TestCaseDesc {
     private static Logger logger = LogManager.getLogger(TestCaseDesc.class);
-    private String caseName;
-    private List<TestCase.Component> components;
-    private String requestURL;
-    private boolean isValidate;
+    private String testFramework;
+    private String testVersion;
+    private List<Component> cooperativeFrameworks;
 
     private TestCaseDesc() {
-        components = new ArrayList<>();
-        isValidate = false;
+        cooperativeFrameworks = new ArrayList<>();
     }
 
     public static class Parser {
@@ -34,50 +49,40 @@ public class TestCaseDesc {
                 }
             }
 
-            testCase.caseName = properties.getProperty("case.name", null);
-            testCase.requestURL = properties.getProperty("case.request_url", null);
-            testCase.components = formatComponents(properties.getProperty("case.components", null));
-            testCase.isValidate = validateCaseDesc(testCase);
-            logger.info("load case desc: caseName[{}], caseRequestURL[{}], components[{}], isValidate[{}]",
-                testCase.caseName,
-                testCase.requestURL,
-                testCase.components,
-                testCase.isValidate);
+            testCase.testFramework = properties.getProperty("case.testFramework", null);
+            testCase.testVersion = properties.getProperty("case.testVersion", null);
+            testCase.cooperativeFrameworks = formatComponents(properties.getProperty("case.cooperative_frameworks", null));
+            logger.info("load case desc: testFramework[{}], testVersion[{}], cooperativeFrameworks[{}]",
+                testCase.testFramework,
+                testCase.testVersion,
+                testCase.cooperativeFrameworks);
             return testCase;
         }
 
-        private static boolean validateCaseDesc(TestCaseDesc aCase) {
-            return aCase.requestURL != null && aCase.caseName != null;
-        }
-
-        private static List<TestCase.Component> formatComponents(String componentStr) {
-            List<TestCase.Component> components = new ArrayList<>();
+        private static List<Component> formatComponents(String componentStr) {
+            List<Component> components = new ArrayList<>();
             if (componentStr == null) {
                 return components;
             }
 
             String[] componentSegments = componentStr.split(",");
             for (String segment : componentSegments) {
-                components.add(new TestCase.Component(segment));
+                components.add(new Component(segment));
             }
             return components;
         }
 
     }
 
-    public boolean isValidate() {
-        return isValidate;
+    public String getTestFramework() {
+        return testFramework;
     }
 
-    public String getCaseName() {
-        return caseName;
+    public String getTestVersion() {
+        return testVersion;
     }
 
-    public List<TestCase.Component> getComponents() {
-        return components;
-    }
-
-    public String getRequestURL() {
-        return requestURL;
+    public List<Component> getCooperativeFrameworks() {
+        return cooperativeFrameworks;
     }
 }
