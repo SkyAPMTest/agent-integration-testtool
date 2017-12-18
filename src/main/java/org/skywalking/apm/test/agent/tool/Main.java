@@ -3,33 +3,23 @@ package org.skywalking.apm.test.agent.tool;
 import java.io.File;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.skywalking.apm.test.agent.tool.caseassert.assertor.DataAssert;
-import org.skywalking.apm.test.agent.tool.caseassert.entity.Data;
-import org.skywalking.apm.test.agent.tool.caseassert.exception.AssertFailedException;
-import org.skywalking.apm.test.agent.tool.entity.Report;
-import org.skywalking.apm.test.agent.tool.entity.TestCase;
-import org.skywalking.apm.test.agent.tool.entity.TestCaseDesc;
+import org.skywalking.apm.test.agent.tool.validator.assertor.DataAssert;
+import org.skywalking.apm.test.agent.tool.validator.entity.Data;
+import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
+import org.skywalking.apm.test.agent.tool.report.entity.Report;
+import org.skywalking.apm.test.agent.tool.report.entity.TestCase;
+import org.skywalking.apm.test.agent.tool.report.entity.TestCaseDesc;
 
 public class Main {
     private static Logger logger = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
-        // 校验参数
         logger.info("Begin to validate data.");
-        String testDate = System.getProperty("testDate");
-        String agentBranch = System.getProperty("agentBranch");
-        String agentCommit = System.getProperty("agentCommit");
-        String testCasePath = System.getProperty("testCasePath");
-        String reportFilePath = System.getProperty("reportFilePath");
-        String testCasesStr = System.getProperty("testCases");
-        Report report = new Report(testDate, agentBranch, agentCommit);
 
-        File casesPath = new File(testCasePath);
-        if (!casesPath.exists()) {
-            logger.warn("case directory is't exist.");
-        }
+        Report report = new Report(ConfigHelper.testDate(), ConfigHelper.agentBranch(), ConfigHelper.agentCommit());
+        String[] testCases = ConfigHelper.testCases().split(",");
 
-        String[] testCases = testCasesStr.split(",");
+        String testCasePath = ConfigHelper.testCaseBaseDir();
         // 校验所有插件
         for (String aCase : testCases) {
             if (aCase == null || aCase.length() == 0) {
@@ -61,9 +51,61 @@ public class Main {
 
         //生成报告
         try {
-            report.generateReport(reportFilePath);
+            report.generateReport(ConfigHelper.reportFilePath());
         } catch (Exception e) {
             logger.error("Failed to generate report file", e);
+        }
+    }
+
+    private static class ConfigHelper {
+        private ConfigHelper() {
+        }
+
+        public static String testDate() {
+            return System.getProperty("testDate");
+        }
+
+        public static String agentBranch() {
+            return System.getProperty("agentBranch");
+        }
+
+        public static String agentCommit() {
+            return System.getProperty("agentCommit");
+        }
+
+        public static String testCases() {
+            String testCasesInput = System.getProperty("testCases", "");
+            if (testCasesInput.length() > 0) {
+                return testCasesInput;
+            }
+            String testCasePath = System.getProperty("testCasePath", "");
+
+            if (testCasePath.length() == 0) {
+                logger.warn("test case dir is empty");
+                return "";
+            }
+
+            File testCaseDir = new File(testCasePath);
+            if (!testCaseDir.exists() || !testCaseDir.isDirectory()) {
+                logger.warn("test case dir is not exists or is not directory");
+                return "";
+            }
+
+            StringBuilder testCases = new StringBuilder();
+            File[] testCasesDir = testCaseDir.listFiles();
+            for (File file : testCasesDir) {
+                testCases.append(file.getName() + ",");
+            }
+
+            return testCases.toString();
+        }
+
+        public static String testCaseBaseDir() {
+            return System.getProperty("testCasePath", "");
+        }
+
+        public static String reportFilePath() {
+            return System.getProperty("reportFilePath");
         }
     }
 }
