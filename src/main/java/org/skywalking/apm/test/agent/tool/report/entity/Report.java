@@ -39,14 +39,18 @@ public class Report {
     private final String testDate;
     private final String testBranch;
     private final String commitId;
+    private final String caseBranch;
+    private final String caseCommit;
     private int successCaseCount;
     private int totalCaseCount;
     private List<FrameworkCases> frameworkCases;
 
-    public Report(String date, String branch, String commit) {
+    public Report(String date, String branch, String commit, String caseBranch, String caseCommit) {
         this.testDate = formatTestDate(date);
         this.testBranch = branch;
         this.commitId = commit;
+        this.caseBranch = caseBranch;
+        this.caseCommit = caseCommit;
         this.frameworkCases = new ArrayList<>();
     }
 
@@ -130,5 +134,13 @@ public class Report {
 
     public int getTotalCaseCount() {
         return totalCaseCount;
+    }
+
+    public String getCaseBranch() {
+        return caseBranch;
+    }
+
+    public String getCaseCommit() {
+        return caseCommit;
     }
 }

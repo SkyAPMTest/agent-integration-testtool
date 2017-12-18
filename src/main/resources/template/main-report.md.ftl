@@ -3,8 +3,8 @@
 - tests  : **${testReport.successCaseCount} passed**. **${testReport.totalCaseCount - testReport.successCaseCount} failed**
 - branch name : **[${testReport.testBranch}](https://github.com/apache/incubator-skywalking/tree/${testReport.testBranch})**
 - commit id : **[${testReport.commitId}](https://github.com/apache/incubator-skywalking/commit/${testReport.commitId})**
-- cases branch:
-- cases commit id:
+- cases branch: **[${testReport.caseBranch}](https://github.com/SkywalkingTest/skywalking-autotest-scenarios/tree/${testReport.caseBranch})**
+- cases commit id: **[${testReport.caseCommit}](https://github.com/SkywalkingTest/skywalking-autotest-scenarios/commit/${testReport.caseCommit})**
 
 ## Cases List
 

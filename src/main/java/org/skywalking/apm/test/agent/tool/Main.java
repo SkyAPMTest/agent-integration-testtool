@@ -3,12 +3,12 @@ package org.skywalking.apm.test.agent.tool;
 import java.io.File;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.skywalking.apm.test.agent.tool.validator.assertor.DataAssert;
-import org.skywalking.apm.test.agent.tool.validator.entity.Data;
-import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
 import org.skywalking.apm.test.agent.tool.report.entity.Report;
 import org.skywalking.apm.test.agent.tool.report.entity.TestCase;
 import org.skywalking.apm.test.agent.tool.report.entity.TestCaseDesc;
+import org.skywalking.apm.test.agent.tool.validator.assertor.DataAssert;
+import org.skywalking.apm.test.agent.tool.validator.entity.Data;
+import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
 
 public class Main {
     private static Logger logger = LogManager.getLogger(Main.class);
@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) {
         logger.info("Begin to validate data.");
 
-        Report report = new Report(ConfigHelper.testDate(), ConfigHelper.agentBranch(), ConfigHelper.agentCommit());
+        Report report = new Report(ConfigHelper.testDate(), ConfigHelper.agentBranch(), ConfigHelper.agentCommit(), ConfigHelper.casesBranch(), ConfigHelper.caseCommitId());
         String[] testCases = ConfigHelper.testCases().split(",");
 
         String testCasePath = ConfigHelper.testCaseBaseDir();
@@ -57,55 +57,4 @@ public class Main {
         }
     }
 
-    private static class ConfigHelper {
-        private ConfigHelper() {
-        }
-
-        public static String testDate() {
-            return System.getProperty("testDate");
-        }
-
-        public static String agentBranch() {
-            return System.getProperty("agentBranch");
-        }
-
-        public static String agentCommit() {
-            return System.getProperty("agentCommit");
-        }
-
-        public static String testCases() {
-            String testCasesInput = System.getProperty("testCases", "");
-            if (testCasesInput.length() > 0) {
-                return testCasesInput;
-            }
-            String testCasePath = System.getProperty("testCasePath", "");
-
-            if (testCasePath.length() == 0) {
-                logger.warn("test case dir is empty");
-                return "";
-            }
-
-            File testCaseDir = new File(testCasePath);
-            if (!testCaseDir.exists() || !testCaseDir.isDirectory()) {
-                logger.warn("test case dir is not exists or is not directory");
-                return "";
-            }
-
-            StringBuilder testCases = new StringBuilder();
-            File[] testCasesDir = testCaseDir.listFiles();
-            for (File file : testCasesDir) {
-                testCases.append(file.getName() + ",");
-            }
-
-            return testCases.toString();
-        }
-
-        public static String testCaseBaseDir() {
-            return System.getProperty("testCasePath", "");
-        }
-
-        public static String reportFilePath() {
-            return System.getProperty("reportFilePath");
-        }
-    }
 }
