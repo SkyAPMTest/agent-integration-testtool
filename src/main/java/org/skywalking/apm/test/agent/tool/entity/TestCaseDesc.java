@@ -30,10 +30,9 @@ public class TestCaseDesc {
     private static Logger logger = LogManager.getLogger(TestCaseDesc.class);
     private String testFramework;
     private String testVersion;
-    private List<Component> cooperativeFrameworks;
+    private String projectName;
 
     private TestCaseDesc() {
-        cooperativeFrameworks = new ArrayList<>();
     }
 
     public static class Parser {
@@ -49,13 +48,13 @@ public class TestCaseDesc {
                 }
             }
 
+            testCase.projectName = properties.getProperty("case.projectName", null);
             testCase.testFramework = properties.getProperty("case.testFramework", null);
             testCase.testVersion = properties.getProperty("case.testVersion", null);
-            testCase.cooperativeFrameworks = formatComponents(properties.getProperty("case.cooperative_frameworks", null));
-            logger.info("load case desc: testFramework[{}], testVersion[{}], cooperativeFrameworks[{}]",
+            logger.info("load case desc: projectName[{}] testFramework[{}], testVersion[{}], cooperativeFrameworks[{}]",
+                testCase.projectName,
                 testCase.testFramework,
-                testCase.testVersion,
-                testCase.cooperativeFrameworks);
+                testCase.testVersion);
             return testCase;
         }
 
@@ -82,7 +81,7 @@ public class TestCaseDesc {
         return testVersion;
     }
 
-    public List<Component> getCooperativeFrameworks() {
-        return cooperativeFrameworks;
+    public String getProjectName() {
+        return projectName;
     }
 }

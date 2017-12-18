@@ -22,51 +22,61 @@ import java.util.List;
 
 public class CaseScenario {
     private String testFramework;
-    private List<TestCase> cases;
-    private List<Component> cooperativeFrameworks;
-    private SupportedStatus status;
+    private DisplayStatus status;
+    private List<CategoryForProject> categoryForProjects;
 
-    private CaseScenario(String testFramework, List<Component> cooperativeFrameworks) {
+    private CaseScenario(String testFramework) {
         this.testFramework = testFramework;
-        this.cooperativeFrameworks = cooperativeFrameworks;
-        this.cases = new ArrayList<>();
+        this.categoryForProjects = new ArrayList<>();
     }
 
     public static CaseScenario buildCaseScenario(TestCase testCase) {
-        return new CaseScenario(testCase.getTestFramework(), testCase.getCooperativeFrameworks());
+        return new CaseScenario(testCase.getTestFramework());
     }
 
     public void addTestCase(TestCase testCase) {
-        this.cases.add(testCase);
+        CategoryForProject categoryForProject = findCategoryForProject(testCase.getProjectName());
+        if (categoryForProject == null) {
+            categoryForProject = CategoryForProject.buildCategoryForProject(testCase);
+            this.categoryForProjects.add(categoryForProject);
+        }
+
+        categoryForProject.addTestCases(testCase);
+    }
+
+    private CategoryForProject findCategoryForProject(String projectName) {
+        for (CategoryForProject project : categoryForProjects) {
+            if (project.getName().equals(projectName)) {
+                return project;
+            }
+        }
+
+        return null;
+    }
+
+    public Context generateStatus() {
+        int total = 0;
+        int success = 0;
+
+        for (CategoryForProject project : categoryForProjects) {
+            Context context = project.generateStatus();
+            total += context.getTotal();
+            success += context.getSuccess();
+        }
+
+        this.status = new DisplayStatus(success, total);
+        return new Context(total, success);
     }
 
     public String getTestFramework() {
         return testFramework;
     }
 
-    public List<TestCase> getCases() {
-        return cases;
-    }
-
-    public List<Component> getCooperativeFrameworks() {
-        return cooperativeFrameworks;
-    }
-
-    public SupportedStatus getStatus() {
+    public DisplayStatus getStatus() {
         return status;
     }
 
-    SupportedStatus verifyAndSetStatus() {
-        SupportedStatus status = SupportedStatus.SUPPORTED;
-        for (TestCase aCase : cases) {
-            if (!aCase.supported()) {
-                status = SupportedStatus.FAILED;
-                break;
-            }
-        }
-
-        this.status = status;
-        return this.status;
+    public List<CategoryForProject> getCategoryForProjects() {
+        return categoryForProjects;
     }
-
 }

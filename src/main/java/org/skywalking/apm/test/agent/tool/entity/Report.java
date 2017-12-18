@@ -40,24 +40,13 @@ public class Report {
     private final String testBranch;
     private final String commitId;
     private List<CaseScenario> caseScenarios;
-    private SupportedStatus status;
+    private DisplayStatus status;
 
     public Report(String date, String branch, String commit) {
         this.testDate = formatTestDate(date);
         this.testBranch = branch;
         this.commitId = commit;
         this.caseScenarios = new ArrayList<>();
-    }
-
-    public void verifyAndSetStatus() {
-        SupportedStatus status = SupportedStatus.SUPPORTED;
-        for (CaseScenario scenario : caseScenarios) {
-            if (SupportedStatus.FAILED == scenario.verifyAndSetStatus()) {
-                status = SupportedStatus.FAILED;
-                break;
-            }
-        }
-        this.status = status;
     }
 
     public String getTestDate() {
@@ -76,7 +65,7 @@ public class Report {
         return caseScenarios;
     }
 
-    public SupportedStatus getStatus() {
+    public DisplayStatus getStatus() {
         return status;
     }
 
@@ -104,18 +93,22 @@ public class Report {
     private String formatTestDate(String date) {
         try {
             Date testDate = new SimpleDateFormat("yyyy-MM-dd-HH-mm").parse(date);
-            return new SimpleDateFormat("yyyy--MM--dd%20HH:mm").format(testDate);
+            return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(testDate);
         } catch (ParseException e) {
             logger.error("Failed to format date[{}].", date, e);
         }
         return date;
     }
 
-    public void setStatus(SupportedStatus status) {
+    public void setStatus(DisplayStatus status) {
         this.status = status;
     }
 
     public void generateReport(String path) throws IOException, TemplateException {
+        //
+        generateDisplayStatus();
+        //
+
         File reportFile = new File(path, "README.md");
         if (!reportFile.getParentFile().exists()) {
             reportFile.getParentFile().mkdirs();
@@ -136,5 +129,18 @@ public class Report {
         fileOutputStream.write(stringWriter.getBuffer().toString());
         stringWriter.close();
         fileOutputStream.close();
+    }
+
+    public void generateDisplayStatus() {
+        int total = 0;
+        int success = 0;
+
+        for (CaseScenario scenario : caseScenarios) {
+            Context context = scenario.generateStatus();
+            total += context.getTotal();
+            success += context.getSuccess();
+        }
+
+        this.status = new DisplayStatus(success, total);
     }
 }

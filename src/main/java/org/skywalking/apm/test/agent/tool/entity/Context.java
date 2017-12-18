@@ -17,32 +17,20 @@
 
 package org.skywalking.apm.test.agent.tool.entity;
 
-public class SupportedStatus {
-    public static final SupportedStatus ERROR = new SupportedStatus("error", "red");
-    public static final SupportedStatus FAILED = new SupportedStatus("failed", "red");
-    public static final SupportedStatus SUPPORTED = new SupportedStatus("supported", "brightgreen");
+public class Context {
+    private int total;
+    private int success;
 
-    private String desc;
-    private String color;
-
-    private SupportedStatus(String desc, String color) {
-        this.desc = desc;
-        this.color = color;
+    public Context(int total, int success) {
+        this.total = total;
+        this.success = success;
     }
 
-    public String getDesc() {
-        return desc;
+    public int getTotal() {
+        return total;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
+    public int getSuccess() {
+        return success;
     }
 }

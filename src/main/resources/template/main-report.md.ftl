@@ -1,35 +1,27 @@
-# Test Report
+# Test Report - ${testReport.testDate}
 
 [![TestStatus Badge](https://img.shields.io/badge/status-${testReport.status.desc}-${testReport.status.color}.svg)]()
-[![TestStatus Badge](https://img.shields.io/badge/report--date-${testReport.testDate}-brightgreen.svg)]()
-[![TestStatus Badge](https://img.shields.io/badge/branch-${testReport.testBranch}-brightgreen.svg)]()
-[![TestStatus Badge](https://img.shields.io/badge/commitId-${testReport.commitId}-brightgreen.svg)]()
+
+- Branch Name : **[${testReport.testBranch}](https://github.com/apache/incubator-skywalking/tree/${testReport.testBranch})**
+- Commit Id : **[${testReport.commitId}](https://github.com/apache/incubator-skywalking/commit/${testReport.commitId})**
+
+## Cases List
 
 <#list testReport.caseScenarios as caseScenarios>
-## ${caseScenarios.testFramework} Scenario
-
-[![TestStatus Badge](https://img.shields.io/badge/status-${caseScenarios.status.desc}-${caseScenarios.status.color}.svg)]()
-${caseScenarios.testFramework} Scenario contain **${(caseScenarios.cases?size)}** cases. The scenario use the following component. and click [me](#${caseScenarios.testFramework?lower_case}-support-version) to get the support version list.
-
-<#list caseScenarios.cooperativeFrameworks as cooperativeFramework>
-- `${cooperativeFramework.name}`
+| Framework | Status | Cases|
+|:-----|:-----:|:-----:|
+|${caseScenarios.testFramework}|[![TestStatus Badge](https://img.shields.io/badge/status-${caseScenarios.status.desc}-${caseScenarios.status.color}.svg)]()| [click me](#${caseScenarios.testFramework?lower_case}) |
 </#list>
-
-</#list>
-
-## Support Version
 
 <#list testReport.caseScenarios as caseScenarios>
-### ${caseScenarios.testFramework} Support Version
+## ${caseScenarios.testFramework}
 
-Here is the support version list of the scenario.
-
-| supported version     | status |
-|:------------- |:-------:|
-<#list caseScenarios.cases as item>
-| ${item.caseName}  | [![TestStatus Badge](https://img.shields.io/badge/test--status-${item.status.desc}-${item.status.color}.svg)]() |
+### <#list caseScenarios.categoryForProjects as project>
+|  Version     | Supported | UnSupported|
+|:------------- |:-------:|:-----:|
+<#list project.testCases as item>
+| ${item.caseName}  | <#if item.success>:heavy_check_mark:</#if>|<#if !item.success>:heavy_check_mark:</#if>|
+</#list>
 </#list>
 
 </#list>
-
-see build log:

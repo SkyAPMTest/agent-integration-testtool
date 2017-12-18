@@ -17,40 +17,33 @@
 
 package org.skywalking.apm.test.agent.tool.entity;
 
-public class TestCase {
-    private String caseName;
-    private boolean success;
-    private String testFramework;
-    private String projectName;
+public class DisplayStatus {
+    public static final DisplayStatus ERROR = new DisplayStatus(0, 1);
 
-    public TestCase(TestCaseDesc caseDesc) {
-        this.caseName = String.join("-", caseDesc.getTestFramework(), caseDesc.getTestVersion());
-        this.testFramework = caseDesc.getTestFramework();
-        this.projectName = caseDesc.getProjectName();
-        this.success = false;
+    private String desc;
+    private String color;
+
+    public DisplayStatus(int success, int total) {
+        this.desc = success + "/" + total;
+        double rate = success / (total * 1.0);
+        if (rate > 0.9) {
+            this.color = "brightgreen";
+        } else if (rate > 0.8) {
+            this.color = "green";
+        } else if (rate > 0.7) {
+            this.color = "yellowgreen";
+        } else if (rate > 0.6) {
+            this.color = "yellow";
+        } else {
+            this.color = "red";
+        }
     }
 
-    public String getCaseName() {
-        return caseName;
+    public String getDesc() {
+        return desc;
     }
 
-    public String getTestFramework() {
-        return testFramework;
-    }
-
-    public boolean supported() {
-        return this.success;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void testedSuccessfully() {
-        this.success = true;
-    }
-
-    public boolean isSuccess() {
-        return success;
+    public String getColor() {
+        return color;
     }
 }
