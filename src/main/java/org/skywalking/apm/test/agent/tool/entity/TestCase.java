@@ -20,34 +20,21 @@ package org.skywalking.apm.test.agent.tool.entity;
 public class TestCase {
     private String caseName;
     private boolean success;
-    private String testFramework;
-    private String projectName;
 
-    public TestCase(TestCaseDesc caseDesc) {
-        this.caseName = String.join("-", caseDesc.getTestFramework(), caseDesc.getTestVersion());
-        this.testFramework = caseDesc.getTestFramework();
-        this.projectName = caseDesc.getProjectName();
-        this.success = false;
+    public TestCase(String framework, String version) {
+        this.caseName = String.join("-", framework, version);
     }
 
     public String getCaseName() {
         return caseName;
     }
 
-    public String getTestFramework() {
-        return testFramework;
-    }
-
-    public boolean supported() {
-        return this.success;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
     public void testedSuccessfully() {
         this.success = true;
+    }
+
+    public boolean isSuccessfully() {
+        return success;
     }
 
     public boolean isSuccess() {

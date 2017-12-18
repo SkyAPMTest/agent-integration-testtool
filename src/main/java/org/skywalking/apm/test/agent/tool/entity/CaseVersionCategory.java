@@ -17,22 +17,27 @@
 
 package org.skywalking.apm.test.agent.tool.entity;
 
-/**
- * @author xin
- */
-public class Component {
+import java.util.ArrayList;
+import java.util.List;
 
+public class CaseVersionCategory {
     private String name;
+    private List<TestCase> testCases;
 
-    public Component(String name) {
-        this.name = name;
+    public CaseVersionCategory(String versionName) {
+        this.name = versionName;
+        testCases = new ArrayList<>();
+    }
+
+    public void addTestCases(TestCase testCase) {
+        this.testCases.add(testCase);
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public List<TestCase> getTestCases() {
+        return testCases;
     }
 }

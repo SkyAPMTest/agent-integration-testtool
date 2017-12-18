@@ -7,7 +7,6 @@ import org.skywalking.apm.test.agent.tool.caseassert.assertor.DataAssert;
 import org.skywalking.apm.test.agent.tool.caseassert.entity.Data;
 import org.skywalking.apm.test.agent.tool.caseassert.exception.AssertFailedException;
 import org.skywalking.apm.test.agent.tool.entity.Report;
-import org.skywalking.apm.test.agent.tool.entity.DisplayStatus;
 import org.skywalking.apm.test.agent.tool.entity.TestCase;
 import org.skywalking.apm.test.agent.tool.entity.TestCaseDesc;
 
@@ -27,7 +26,7 @@ public class Main {
 
         File casesPath = new File(testCasePath);
         if (!casesPath.exists()) {
-            report.setStatus(DisplayStatus.ERROR);
+            logger.warn("case directory is't exist.");
         }
 
         String[] testCases = testCasesStr.split(",");
@@ -38,7 +37,7 @@ public class Main {
             }
             File casePath = new File(testCasePath, aCase);
             TestCaseDesc caseDesc = TestCaseDesc.Parser.parse(new File(casePath, "testcase.desc"));
-            TestCase testCase = new TestCase(caseDesc);
+            TestCase testCase = new TestCase(caseDesc.getTestFramework(), caseDesc.getTestVersion());
             try {
                 logger.info("start to assert data of test case[{}]", testCase.getCaseName());
                 File actualData = new File(casePath, "actualData.yaml");
@@ -57,7 +56,7 @@ public class Main {
                 logger.error("assert test case {} failed.", testCase.getCaseName(), e);
             }
 
-            report.addTestCase(testCase);
+            report.addTestCase(caseDesc.getProjectName(), caseDesc.getTestFramework(), testCase);
         }
 
         //生成报告

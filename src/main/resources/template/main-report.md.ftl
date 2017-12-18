@@ -1,25 +1,26 @@
 # Test Report - ${testReport.testDate}
 
-[![TestStatus Badge](https://img.shields.io/badge/status-${testReport.status.desc}-${testReport.status.color}.svg)]()
-
-- Branch Name : **[${testReport.testBranch}](https://github.com/apache/incubator-skywalking/tree/${testReport.testBranch})**
-- Commit Id : **[${testReport.commitId}](https://github.com/apache/incubator-skywalking/commit/${testReport.commitId})**
+- tests  : **${testReport.successCaseCount} passed**. **${testReport.totalCaseCount - testReport.successCaseCount} failed**
+- branch name : **[${testReport.testBranch}](https://github.com/apache/incubator-skywalking/tree/${testReport.testBranch})**
+- commit id : **[${testReport.commitId}](https://github.com/apache/incubator-skywalking/commit/${testReport.commitId})**
+- cases branch:
+- cases commit id:
 
 ## Cases List
 
-<#list testReport.caseScenarios as caseScenarios>
+<#list testReport.frameworkCases as frameworkCases>
 | Framework | Status | Cases|
 |:-----|:-----:|:-----:|
-|${caseScenarios.testFramework}|[![TestStatus Badge](https://img.shields.io/badge/status-${caseScenarios.status.desc}-${caseScenarios.status.color}.svg)]()| [click me](#${caseScenarios.testFramework?lower_case}) |
+|${frameworkCases.testFramework}| **${frameworkCases.successCaseCount} passed. ${frameworkCases.totalCaseCount - frameworkCases.successCaseCount} failed**| [click me](#${frameworkCases.testFramework?lower_case}) |
 </#list>
 
-<#list testReport.caseScenarios as caseScenarios>
-## ${caseScenarios.testFramework}
+<#list testReport.frameworkCases as frameworkCases>
+## ${frameworkCases.testFramework}
 
-### <#list caseScenarios.categoryForProjects as project>
-|  Version     | Supported | UnSupported|
+### <#list frameworkCases.caseByVersionCategories as versionCategory>
+|  Version     | Passed | Failed|
 |:------------- |:-------:|:-----:|
-<#list project.testCases as item>
+<#list versionCategory.testCases as item>
 | ${item.caseName}  | <#if item.success>:heavy_check_mark:</#if>|<#if !item.success>:heavy_check_mark:</#if>|
 </#list>
 </#list>

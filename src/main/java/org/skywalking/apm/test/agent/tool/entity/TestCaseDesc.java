@@ -20,8 +20,6 @@ package org.skywalking.apm.test.agent.tool.entity;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -57,20 +55,6 @@ public class TestCaseDesc {
                 testCase.testVersion);
             return testCase;
         }
-
-        private static List<Component> formatComponents(String componentStr) {
-            List<Component> components = new ArrayList<>();
-            if (componentStr == null) {
-                return components;
-            }
-
-            String[] componentSegments = componentStr.split(",");
-            for (String segment : componentSegments) {
-                components.add(new Component(segment));
-            }
-            return components;
-        }
-
     }
 
     public String getTestFramework() {

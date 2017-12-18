@@ -39,14 +39,15 @@ public class Report {
     private final String testDate;
     private final String testBranch;
     private final String commitId;
-    private List<CaseScenario> caseScenarios;
-    private DisplayStatus status;
+    private int successCaseCount;
+    private int totalCaseCount;
+    private List<FrameworkCases> frameworkCases;
 
     public Report(String date, String branch, String commit) {
         this.testDate = formatTestDate(date);
         this.testBranch = branch;
         this.commitId = commit;
-        this.caseScenarios = new ArrayList<>();
+        this.frameworkCases = new ArrayList<>();
     }
 
     public String getTestDate() {
@@ -61,27 +62,12 @@ public class Report {
         return commitId;
     }
 
-    public List<CaseScenario> getCaseScenarios() {
-        return caseScenarios;
+    public List<FrameworkCases> getFrameworkCases() {
+        return frameworkCases;
     }
 
-    public DisplayStatus getStatus() {
-        return status;
-    }
-
-    public void addTestCase(TestCase testCase) {
-        CaseScenario scenario = findCaseScenario(testCase.getTestFramework());
-
-        if (scenario == null) {
-            scenario = CaseScenario.buildCaseScenario(testCase);
-            this.caseScenarios.add(scenario);
-        }
-
-        scenario.addTestCase(testCase);
-    }
-
-    private CaseScenario findCaseScenario(String testFramework) {
-        for (CaseScenario ascenario : caseScenarios) {
+    private FrameworkCases findCasesByFrameworkName(String testFramework) {
+        for (FrameworkCases ascenario : frameworkCases) {
             if (ascenario.getTestFramework().equalsIgnoreCase(testFramework)) {
                 return ascenario;
             }
@@ -100,15 +86,7 @@ public class Report {
         return date;
     }
 
-    public void setStatus(DisplayStatus status) {
-        this.status = status;
-    }
-
     public void generateReport(String path) throws IOException, TemplateException {
-        //
-        generateDisplayStatus();
-        //
-
         File reportFile = new File(path, "README.md");
         if (!reportFile.getParentFile().exists()) {
             reportFile.getParentFile().mkdirs();
@@ -131,16 +109,26 @@ public class Report {
         fileOutputStream.close();
     }
 
-    public void generateDisplayStatus() {
-        int total = 0;
-        int success = 0;
-
-        for (CaseScenario scenario : caseScenarios) {
-            Context context = scenario.generateStatus();
-            total += context.getTotal();
-            success += context.getSuccess();
+    public void addTestCase(String projectName, String framework, TestCase aCase) {
+        FrameworkCases frameworkCases = findCasesByFrameworkName(framework);
+        if (frameworkCases == null) {
+            frameworkCases = new FrameworkCases(framework);
+            this.frameworkCases.add(frameworkCases);
         }
 
-        this.status = new DisplayStatus(success, total);
+        frameworkCases.addTestCase(projectName, aCase);
+
+        if (aCase.isSuccessfully()) {
+            successCaseCount++;
+        }
+        totalCaseCount++;
+    }
+
+    public int getSuccessCaseCount() {
+        return successCaseCount;
+    }
+
+    public int getTotalCaseCount() {
+        return totalCaseCount;
     }
 }
