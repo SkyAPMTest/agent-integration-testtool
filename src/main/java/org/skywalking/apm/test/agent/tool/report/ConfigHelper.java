@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.skywalking.apm.test.agent.tool;
+package org.skywalking.apm.test.agent.tool.report;
 
 import java.io.File;
 import org.apache.logging.log4j.LogManager;
