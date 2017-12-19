@@ -8,9 +8,9 @@
 
 ## Cases List
 
-<#list testReport.frameworkCases as frameworkCases>
 | Framework | Status | Cases|
 |:-----|:-----:|:-----:|
+<#list testReport.frameworkCases as frameworkCases>
 |${frameworkCases.testFramework}| **${frameworkCases.successCaseCount} passed. ${frameworkCases.totalCaseCount - frameworkCases.successCaseCount} failed**| [click me](#${frameworkCases.testFramework?lower_case}) |
 </#list>
 
