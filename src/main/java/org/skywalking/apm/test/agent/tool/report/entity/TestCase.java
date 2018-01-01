@@ -21,8 +21,8 @@ public class TestCase {
     private String caseName;
     private boolean success;
 
-    public TestCase(String framework, String version) {
-        this.caseName = String.join("-", framework, version);
+    public TestCase(String testComponents) {
+        this.caseName = testComponents;
     }
 
     public String getCaseName() {

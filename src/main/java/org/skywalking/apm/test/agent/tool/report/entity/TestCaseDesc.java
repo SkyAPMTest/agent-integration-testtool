@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger;
 public class TestCaseDesc {
     private static Logger logger = LogManager.getLogger(TestCaseDesc.class);
     private String testFramework;
-    private String testVersion;
+    private String testComponents;
     private String projectName;
 
     private TestCaseDesc() {
@@ -48,11 +48,11 @@ public class TestCaseDesc {
 
             testCase.projectName = properties.getProperty("case.projectName", null);
             testCase.testFramework = properties.getProperty("case.testFramework", null);
-            testCase.testVersion = properties.getProperty("case.testVersion", null);
-            logger.info("load case desc: projectName[{}] testFramework[{}], testVersion[{}], cooperativeFrameworks[{}]",
+            testCase.testComponents = properties.getProperty("case.testComponents", null);
+            logger.info("load case desc: projectName[{}] testFramework[{}], testComponents[{}], cooperativeFrameworks[{}]",
                 testCase.projectName,
                 testCase.testFramework,
-                testCase.testVersion);
+                testCase.testComponents);
             return testCase;
         }
     }
@@ -61,8 +61,8 @@ public class TestCaseDesc {
         return testFramework;
     }
 
-    public String getTestVersion() {
-        return testVersion;
+    public String getTestComponents() {
+        return testComponents;
     }
 
     public String getProjectName() {

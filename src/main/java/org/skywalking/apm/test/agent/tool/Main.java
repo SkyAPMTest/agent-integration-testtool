@@ -27,7 +27,7 @@ public class Main {
             }
             File casePath = new File(testCasePath, aCase);
             TestCaseDesc caseDesc = TestCaseDesc.Parser.parse(new File(casePath, "testcase.desc"));
-            TestCase testCase = new TestCase(caseDesc.getTestFramework(), caseDesc.getTestVersion());
+            TestCase testCase = new TestCase(caseDesc.getTestComponents());
             try {
                 logger.info("start to assert data of test case[{}]", testCase.getCaseName());
                 File actualData = new File(casePath, "actualData.yaml");
