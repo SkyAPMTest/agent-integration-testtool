@@ -3,6 +3,7 @@ package org.skywalking.apm.test.agent.tool.validator.assertor;
 import org.skywalking.apm.test.agent.tool.validator.assertor.element.ElementAssertor;
 import org.skywalking.apm.test.agent.tool.validator.assertor.element.EqualsAssertor;
 import org.skywalking.apm.test.agent.tool.validator.assertor.element.GreatThanAssertor;
+import org.skywalking.apm.test.agent.tool.validator.assertor.element.GreetEqualAssertor;
 import org.skywalking.apm.test.agent.tool.validator.assertor.element.NoopAssertor;
 import org.skywalking.apm.test.agent.tool.validator.assertor.element.NotEqualsAssertor;
 import org.skywalking.apm.test.agent.tool.validator.assertor.element.NotNullAssertor;
@@ -34,6 +35,8 @@ public class ExpressParser {
                     return new EqualsAssertor(exceptedValue);
                 case "gt":
                     return new GreatThanAssertor(exceptedValue);
+                case "ge":
+                    return new GreetEqualAssertor(exceptedValue);
             }
         }
 
