@@ -124,7 +124,7 @@ public class Report {
         if (!testReportDir.exists()) {
             testReportDir.mkdirs();
         }
-        String fileName = "testReport-" + ConfigHelper.casesBranch() + "-" + ConfigHelper.testDate();
+        String fileName = "testReport-" + ConfigHelper.casesBranch() + "-" + ConfigHelper.testDate() + ".md";
         File testReportFile = new File(testReportDir, fileName);
         if (!testReportFile.exists()) {
             testReportFile.createNewFile();
