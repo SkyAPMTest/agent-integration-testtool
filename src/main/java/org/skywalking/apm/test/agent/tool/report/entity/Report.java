@@ -120,7 +120,7 @@ public class Report {
     private File generateReportFile(String basePath) throws ParseException, IOException {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(testDate));
-        File testReportDir = new File(new File(new File(basePath, calendar.get(Calendar.YEAR) + ""), calendar.get(Calendar.MONTH) + ""), ConfigHelper.committer());
+        File testReportDir = new File(new File(new File(basePath, calendar.get(Calendar.YEAR) + ""), (calendar.get(Calendar.MONTH) + 1) + ""), ConfigHelper.committer());
         if (!testReportDir.exists()) {
             testReportDir.mkdirs();
         }
