@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) {
         logger.info("Begin to validate data.");
 
-        Report report = new Report(ConfigHelper.testDate(), ConfigHelper.agentBranch(), ConfigHelper.agentCommit(), ConfigHelper.casesBranch(), ConfigHelper.caseCommitId());
+        Report report = new Report();
         String[] testCases = ConfigHelper.testCases().split(",");
 
         String testCasePath = ConfigHelper.testCaseBaseDir();

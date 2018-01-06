@@ -27,12 +27,14 @@ import java.io.StringWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.skywalking.apm.test.agent.tool.ConfigHelper;
 
 public class Report {
     private static Logger logger = LogManager.getLogger(Report.class);
@@ -41,16 +43,18 @@ public class Report {
     private final String commitId;
     private final String caseBranch;
     private final String caseCommit;
+    private final String committer;
     private int successCaseCount;
     private int totalCaseCount;
     private List<FrameworkCases> frameworkCases;
 
-    public Report(String date, String branch, String commit, String caseBranch, String caseCommit) {
-        this.testDate = formatTestDate(date);
-        this.testBranch = branch;
-        this.commitId = commit;
-        this.caseBranch = caseBranch;
-        this.caseCommit = caseCommit;
+    public Report() {
+        this.testDate = formatTestDate(ConfigHelper.testDate());
+        this.testBranch = ConfigHelper.agentBranch();
+        this.commitId = ConfigHelper.agentCommit();
+        this.caseBranch = ConfigHelper.casesBranch();
+        this.caseCommit = ConfigHelper.caseCommitId();
+        this.committer = ConfigHelper.committer();
         this.frameworkCases = new ArrayList<>();
     }
 
@@ -90,15 +94,9 @@ public class Report {
         return date;
     }
 
-    public void generateReport(String path) throws IOException, TemplateException {
-        File reportFile = new File(path, "README.md");
-        if (!reportFile.getParentFile().exists()) {
-            reportFile.getParentFile().mkdirs();
-        }
+    public void generateReport(String path) throws IOException, TemplateException, ParseException {
+        File reportFile = generateReportFile(path);
 
-        if (!reportFile.exists()) {
-            reportFile.createNewFile();
-        }
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
         cfg.setClassForTemplateLoading(this.getClass(), "/template");
         cfg.setDefaultEncoding("UTF-8");
@@ -111,6 +109,27 @@ public class Report {
         fileOutputStream.write(stringWriter.getBuffer().toString());
         stringWriter.close();
         fileOutputStream.close();
+    }
+
+    /**
+     * File Path Year - Month - apache - testReport-2019-10-10-10-11-11.md - testReport-2019-10-10-10-11-12.md -
+     * ascrutae ...
+     *
+     * @return
+     */
+    private File generateReportFile(String basePath) throws ParseException, IOException {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(testDate));
+        File testReportDir = new File(new File(new File(basePath, calendar.get(Calendar.YEAR) + ""), calendar.get(Calendar.MONTH) + ""), ConfigHelper.committer());
+        if (!testReportDir.exists()) {
+            testReportDir.mkdirs();
+        }
+        String fileName = "testReport-" + ConfigHelper.agentBranch() + "-" + ConfigHelper.testDate();
+        File testReportFile = new File(testReportDir, fileName);
+        if (!testReportFile.exists()) {
+            testReportFile.createNewFile();
+        }
+        return testReportFile;
     }
 
     public void addTestCase(String projectName, String framework, TestCase aCase) {

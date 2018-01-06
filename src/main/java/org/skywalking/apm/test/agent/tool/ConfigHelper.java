@@ -81,4 +81,8 @@ public class ConfigHelper {
     public static String caseCommitId() {
         return System.getProperty("casesCommitId", "");
     }
+
+    public static String committer() {
+        return System.getProperty("committer", "");
+    }
 }
