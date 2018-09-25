@@ -75,7 +75,7 @@ public class ConfigHelper {
     }
 
     public static String casesBranch() {
-        return System.getProperty("casesBranch", "");
+        return System.getProperty("casesBranch", "").replace("/", "-");
     }
 
     public static String caseCommitId() {
