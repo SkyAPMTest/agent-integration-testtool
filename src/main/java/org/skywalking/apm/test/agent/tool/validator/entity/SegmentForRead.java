@@ -21,129 +21,85 @@ public class SegmentForRead implements Segment {
     }
 
     public static class SegmentRefForRead implements SegmentRef {
-        private String parentServiceId;
-        private String parentServiceName;
+        private String parentEndpointId;
+        private String parentEndpoint;
         private String networkAddressId;
-        private String entryServiceId;
+        private String entryEndpointId;
         private String refType;
         private String parentSpanId;
         private String parentTraceSegmentId;
-        private String parentApplicationInstanceId;
+        private String parentServiceInstanceId;
         private String networkAddress;
-        private String entryServiceName;
-        private String entryApplicationInstanceId;
+        private String entryEndpoint;
+        private String entryServiceInstanceId;
 
         public SegmentRefForRead() {
         }
 
         public SegmentRefForRead(Map<String, Object> ref) {
             this.networkAddress = ref.get("networkAddress").toString();
-            this.entryServiceName = ref.get("entryServiceName").toString();
-            this.parentServiceName = ref.get("parentServiceName").toString();
+            this.entryEndpoint = ref.get("entryEndpoint").toString();
+            this.parentEndpoint = ref.get("parentEndpoint").toString();
             this.parentTraceSegmentId = ref.get("parentTraceSegmentId").toString();
-            this.entryApplicationInstanceId = ref.get("entryApplicationInstanceId").toString();
+            this.entryServiceInstanceId = ref.get("entryServiceInstanceId").toString();
             this.refType = ref.get("refType") == null ? null : ref.get("refType").toString();
             this.parentSpanId = ref.get("parentSpanId") == null ? null : ref.get("parentSpanId").toString();
-            this.entryServiceId = ref.get("entryServiceId") == null ? null : ref.get("entryServiceId").toString();
-            this.parentServiceId = ref.get("parentServiceId") == null ? null : ref.get("parentServiceId").toString();
+            this.entryEndpointId = ref.get("entryEndpointId") == null ? null : ref.get("entryEndpointId").toString();
+            this.parentEndpointId = ref.get("parentEndpointId") == null ? null : ref.get("parentEndpointId").toString();
             this.networkAddressId = ref.get("networkAddressId") == null ? null : ref.get("networkAddressId").toString();
-            this.parentApplicationInstanceId = ref.get("parentApplicationInstanceId") == null ? null : ref.get("parentApplicationInstanceId").toString();
+            this.parentServiceInstanceId = ref.get("parentServiceInstanceId") == null ? null : ref.get("parentServiceInstanceId").toString();
         }
 
-        public String getParentServiceId() {
-            return parentServiceId;
+        public void setParentEndpointId(String parentEndpointId) {
+            this.parentEndpointId = parentEndpointId;
         }
 
-        public void setParentServiceId(String parentServiceId) {
-            this.parentServiceId = parentServiceId;
-        }
-
-        public String getParentServiceName() {
-            return parentServiceName;
-        }
-
-        public void setParentServiceName(String parentServiceName) {
-            this.parentServiceName = parentServiceName;
-        }
-
-        public String getNetworkAddressId() {
-            return networkAddressId;
+        public void setParentEndpoint(String parentEndpoint) {
+            this.parentEndpoint = parentEndpoint;
         }
 
         public void setNetworkAddressId(String networkAddressId) {
             this.networkAddressId = networkAddressId;
         }
 
-        public String getEntryServiceId() {
-            return entryServiceId;
-        }
-
-        public void setEntryServiceId(String entryServiceId) {
-            this.entryServiceId = entryServiceId;
-        }
-
-        public String getRefType() {
-            return refType;
+        public void setEntryEndpointId(String entryEndpointId) {
+            this.entryEndpointId = entryEndpointId;
         }
 
         public void setRefType(String refType) {
             this.refType = refType;
         }
 
-        public String getParentSpanId() {
-            return parentSpanId;
-        }
-
         public void setParentSpanId(String parentSpanId) {
             this.parentSpanId = parentSpanId;
-        }
-
-        public String getParentTraceSegmentId() {
-            return parentTraceSegmentId;
         }
 
         public void setParentTraceSegmentId(String parentTraceSegmentId) {
             this.parentTraceSegmentId = parentTraceSegmentId;
         }
 
-        public String getParentApplicationInstanceId() {
-            return parentApplicationInstanceId;
-        }
-
-        public void setParentApplicationInstanceId(String parentApplicationInstanceId) {
-            this.parentApplicationInstanceId = parentApplicationInstanceId;
-        }
-
-        public String getNetworkAddress() {
-            return networkAddress;
+        public void setParentServiceInstanceId(String parentServiceInstanceId) {
+            this.parentServiceInstanceId = parentServiceInstanceId;
         }
 
         public void setNetworkAddress(String networkAddress) {
             this.networkAddress = networkAddress;
         }
 
-        public String getEntryServiceName() {
-            return entryServiceName;
+        public void setEntryEndpoint(String entryEndpoint) {
+            this.entryEndpoint = entryEndpoint;
         }
 
-        public void setEntryServiceName(String entryServiceName) {
-            this.entryServiceName = entryServiceName;
-        }
-
-        public String getEntryApplicationInstanceId() {
-            return entryApplicationInstanceId;
-        }
-
-        public void setEntryApplicationInstanceId(String entryApplicationInstanceId) {
-            this.entryApplicationInstanceId = entryApplicationInstanceId;
+        public void setEntryServiceInstanceId(String entryServiceInstanceId) {
+            this.entryServiceInstanceId = entryServiceInstanceId;
         }
 
         @Override public String parentServiceId() {
-            return parentServiceId;
+            return parentEndpointId;
         }
 
         @Override public String parentServiceName() {
-            return parentServiceName;
+            return parentEndpoint;
         }
 
         @Override public String networkAddressId() {
@@ -151,7 +107,7 @@ public class SegmentForRead implements Segment {
         }
 
         @Override public String entryServiceId() {
-            return entryServiceId;
+            return entryEndpointId;
         }
 
         @Override public String refType() {
@@ -167,7 +123,7 @@ public class SegmentForRead implements Segment {
         }
 
         @Override public String parentApplicationInstanceId() {
-            return parentApplicationInstanceId;
+            return parentServiceInstanceId;
         }
 
         @Override public String networkAddress() {
@@ -175,7 +131,7 @@ public class SegmentForRead implements Segment {
         }
 
         @Override public String entryServiceName() {
-            return entryServiceName;
+            return entryEndpoint;
         }
 
         @Override public void parentTraceSegmentId(String parentTraceSegmentId) {
@@ -183,7 +139,7 @@ public class SegmentForRead implements Segment {
         }
 
         @Override public String entryApplicationInstanceId() {
-            return entryApplicationInstanceId;
+            return entryServiceInstanceId;
         }
 
     }
