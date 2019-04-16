@@ -2,7 +2,7 @@ package org.skywalking.apm.test.agent.tool.validator.assertor;
 
 import java.util.List;
 import org.skywalking.apm.test.agent.tool.validator.entity.RegistryApplication;
-import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.RegistryApplicationNotFoundException;
 
 public class ApplicationAssert {
     public static void assertEquals(List<RegistryApplication> expected,
@@ -14,10 +14,6 @@ public class ApplicationAssert {
 
         for (RegistryApplication application : expected) {
             RegistryApplication actualApplication = getMatchApplication(actual, application);
-            if (actualApplication == null) {
-                throw new AssertFailedException(application.applicationCode(), "null");
-            }
-
             ExpressParser.parse(application.expressValue()).assertValue("registry application", actualApplication.expressValue());
         }
     }
@@ -29,6 +25,6 @@ public class ApplicationAssert {
                 return registryApplication;
             }
         }
-        return null;
+        throw new RegistryApplicationNotFoundException(application.applicationCode());
     }
 }

@@ -8,7 +8,7 @@ import org.skywalking.apm.test.agent.tool.report.entity.TestCase;
 import org.skywalking.apm.test.agent.tool.report.entity.TestCaseDesc;
 import org.skywalking.apm.test.agent.tool.validator.assertor.DataAssert;
 import org.skywalking.apm.test.agent.tool.validator.entity.Data;
-import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.AssertFailedException;
 
 public class Main {
     private static Logger logger = LogManager.getLogger(Main.class);

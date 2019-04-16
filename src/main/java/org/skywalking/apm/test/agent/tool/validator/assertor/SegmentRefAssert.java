@@ -4,7 +4,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.skywalking.apm.test.agent.tool.validator.entity.SegmentRef;
-import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.AssertFailedException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.SegmentRefNotFoundException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.SizeAssertFailedException;
 
 public class SegmentRefAssert {
     private static Logger logger = LogManager.getLogger(SegmentRefAssert.class);
@@ -15,13 +17,13 @@ public class SegmentRefAssert {
         }
 
         if (actual == null || excepted.size() != actual.size()) {
-            throw new AssertFailedException("segment refs: \n expected: " + excepted.size() + "\n actual: " + actual.size());
+            throw new SizeAssertFailedException("segment refs", excepted.size(), actual.size());
         }
 
         for (SegmentRef ref : excepted) {
             SegmentRef actualRef = findSegmentRef(actual, ref);
             if (actualRef == null) {
-                throw new AssertFailedException("segment refs: \n expected count : 1\n actual: 0");
+                throw new SegmentRefNotFoundException(ref);
             }
         }
     }
@@ -33,7 +35,7 @@ public class SegmentRefAssert {
                     return segmentRef;
                 }
             } catch (AssertFailedException e) {
-                logger.info("ref are not equal ignore this ref. \n{}", e.getMessage());
+                //logger.info("ref are not equal ignore this ref. \n{}", e.getMessage());
             }
         }
         return null;

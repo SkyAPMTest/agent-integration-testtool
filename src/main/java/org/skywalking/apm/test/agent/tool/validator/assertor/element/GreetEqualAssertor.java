@@ -18,7 +18,7 @@
 
 package org.skywalking.apm.test.agent.tool.validator.assertor.element;
 
-import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.ValueAssertFailedException;
 
 public class GreetEqualAssertor extends ElementAssertor {
     public GreetEqualAssertor(String exceptedValue) {
@@ -27,7 +27,7 @@ public class GreetEqualAssertor extends ElementAssertor {
 
     @Override public void assertValue(String desc, String actualValue) {
         if (Long.parseLong(actualValue) < Long.parseLong(exceptedValue)) {
-            throw new AssertFailedException(desc, " ge " + exceptedValue, actualValue);
+            throw new ValueAssertFailedException(desc, " ge " + exceptedValue, actualValue);
         }
     }
 }

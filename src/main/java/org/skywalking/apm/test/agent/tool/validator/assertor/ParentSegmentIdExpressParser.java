@@ -2,7 +2,7 @@ package org.skywalking.apm.test.agent.tool.validator.assertor;
 
 import java.util.List;
 import org.skywalking.apm.test.agent.tool.validator.entity.SegmentItem;
-import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.SizeAssertFailedException;
 
 /**
  * Created by xin on 2017/7/16.
@@ -22,7 +22,7 @@ public class ParentSegmentIdExpressParser {
         for (SegmentItem segmentItem : actual) {
             if (segmentItem.applicationCode().equals(applicationCode)) {
                 if (segmentItem.segments().size() <= expectedSize) {
-                    throw new AssertFailedException("segment size\nexpected: " + (expectedSize + 1) + ", actual: " + segmentItem.segments().size());
+                    throw new SizeAssertFailedException("segment size", (expectedSize + 1), segmentItem.segments().size());
                 }
 
                 return segmentItem.segments().get(expectedSize).segmentId();
