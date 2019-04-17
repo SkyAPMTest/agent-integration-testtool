@@ -17,9 +17,15 @@
 
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
-public class ActualRegistryOperationIsEmptyException extends AssertFailedException {
+public class ParentSegmentNotFoundException extends AssertFailedException {
 
-    public ActualRegistryOperationIsEmptyException(String applicationCode) {
-        super(String.format("ActualRegistryOperationIsEmptyException %s", applicationCode));
+    private final String express;
+
+    public ParentSegmentNotFoundException(String express) {
+        this.express = express;
+    }
+
+    @Override public String getCauseMessage() {
+        return String.format("ParentSegmentNotFoundException\nexpected: %s\nactual: %s\n", express, "Not Found");
     }
 }

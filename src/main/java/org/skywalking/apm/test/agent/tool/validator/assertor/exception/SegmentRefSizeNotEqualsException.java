@@ -15,9 +15,18 @@
  *  limitations under the License.
  */
 
-package org.skywalking.apm.test.agent.tool.validator.assertor;
+package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
-public enum AssertFields {
-    SPAN_OPERATION_NAME,
+public class SegmentRefSizeNotEqualsException extends AssertFailedException {
+    private final int expected;
+    private final int actual;
 
+    public SegmentRefSizeNotEqualsException(int expected, int actual) {
+        this.expected = expected;
+        this.actual = actual;
+    }
+
+    @Override public String getCauseMessage() {
+        return String.format("SegmentRefSizeNotEqualsException\nexpected:\t%s\nactual:\t%s\n", expected, actual);
+    }
 }

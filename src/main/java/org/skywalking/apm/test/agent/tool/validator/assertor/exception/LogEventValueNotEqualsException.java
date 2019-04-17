@@ -18,7 +18,18 @@
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
 public class LogEventValueNotEqualsException extends AssertFailedException {
+    private final String eventKey;
+    private final String expected;
+    private final String actual;
+
     public LogEventValueNotEqualsException(String eventKey, String expected, String actual) {
-        super("");
+        this.eventKey = eventKey;
+        this.expected = expected;
+        this.actual = actual;
+    }
+
+    @Override public String getCauseMessage() {
+        return String.format("[log(%s} value]: expected=>{%s}, actual=>{%s}\n", eventKey,
+            expected, actual);
     }
 }

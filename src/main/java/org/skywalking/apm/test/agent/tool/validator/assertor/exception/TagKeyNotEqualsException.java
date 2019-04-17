@@ -18,7 +18,16 @@
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
 public class TagKeyNotEqualsException extends AssertFailedException {
-    public TagKeyNotEqualsException(String expected, String acutal) {
-        super("");
+    private final String expected;
+    private final String actual;
+
+    public TagKeyNotEqualsException(String expected, String actual) {
+        this.expected = expected;
+        this.actual = actual;
+    }
+
+    @Override
+    public String getCauseMessage() {
+        return String.format("[tag key]: expected=>{%s}, actual=>{%s}\n", expected, actual);
     }
 }

@@ -19,7 +19,14 @@ package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
 public class RegistryInstanceNotFoundException extends AssertFailedException {
 
+    private final String applicationCode;
+
     public RegistryInstanceNotFoundException(String applicationCode) {
-        super(String.format("RegistryInstanceNotFoundException The instance of %s\n", applicationCode));
+        this.applicationCode = applicationCode;
+    }
+
+    @Override public String getCauseMessage() {
+        return String.format("RegistryInstanceNotFoundException\nexpected: Instance of Service(%s)\nactual: %s\n",
+            applicationCode, "Not Found");
     }
 }

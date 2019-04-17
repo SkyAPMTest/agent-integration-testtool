@@ -19,8 +19,41 @@ package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
 import java.util.List;
 import org.skywalking.apm.test.agent.tool.validator.assertor.SegmentPredictionFailedCause;
+import org.skywalking.apm.test.agent.tool.validator.entity.Segment;
+import org.skywalking.apm.test.agent.tool.validator.entity.Span;
 
 public class SegmentNotFoundException extends AssertFailedException {
-    public SegmentNotFoundException(List<SegmentPredictionFailedCause> exceptions) {
+    private final Segment expectedSegment;
+    private final List<SegmentPredictionFailedCause> failedCauses;
+
+    public SegmentNotFoundException(Segment expectedSegment, List<SegmentPredictionFailedCause> failedCauses) {
+        this.expectedSegment = expectedSegment;
+        this.failedCauses = failedCauses;
+    }
+
+    @Override
+    public String getCauseMessage() {
+        StringBuilder expectedMessage = new StringBuilder("\n  Segment:\n");
+        for (Span span : expectedSegment.spans()) {
+            expectedMessage.append(String.format("  - Span[%s, %s] %s\n", span.parentSpanId(), span.spanId(),
+                span.operationName()));
+        }
+
+        StringBuilder causeMessage = new StringBuilder();
+        for (SegmentPredictionFailedCause cause : failedCauses) {
+            Segment actualSegment = cause.getActualSegment();
+            Span actualSpan = cause.getSpanAssertFailedCause().getActualSpan();
+            Span expectedSpan = cause.getSpanAssertFailedCause().getExceptedSpan();
+
+            causeMessage.append(String.format("\n  Segment[%s] validate failed:\n  expected:\tSpan[%s, %s] %s\n  " +
+                    "actual:" +
+                    "\tSpan[%s, %s] %s\n  reason:\t%s\n",
+                actualSegment.segmentId(),
+                expectedSpan.parentSpanId(), expectedSpan.spanId(), expectedSpan.operationName(),
+                actualSpan.parentSpanId(), actualSpan.spanId(), actualSpan.operationName(),
+                cause.getSpanAssertFailedCause().getCauseMessage()));
+        }
+
+        return String.format("SegmentNotFoundException:\nexpected: %s\nactual: %s\n", expectedMessage, causeMessage);
     }
 }

@@ -17,20 +17,23 @@
 
 package org.skywalking.apm.test.agent.tool.validator.assertor;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.Test;
-import org.skywalking.apm.test.agent.tool.validator.entity.RegistryApplication;
-import org.skywalking.apm.test.agent.tool.validator.exception.RegistryApplicationNotFoundException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.SegmentRefAssertFailedException;
+import org.skywalking.apm.test.agent.tool.validator.entity.SegmentRef;
 
-public class ApplicationAssertTest {
+public class SegmentRefAssertFailedCause {
+    private final SegmentRefAssertFailedException failedCause;
+    private final SegmentRef actual;
 
-    @Test(expected = RegistryApplicationNotFoundException.class)
-    public void assertApplicationNotFound() {
-
-        List<RegistryApplication> expected = new ArrayList<>();
-        List<RegistryApplication> actual = new ArrayList<>();
-        ApplicationAssert.assertEquals(expected, actual);
+    public SegmentRefAssertFailedCause(SegmentRefAssertFailedException failedCause, SegmentRef actual) {
+        this.failedCause = failedCause;
+        this.actual = actual;
     }
 
+    public SegmentRefAssertFailedException getFailedCause() {
+        return failedCause;
+    }
+
+    public SegmentRef getActual() {
+        return actual;
+    }
 }

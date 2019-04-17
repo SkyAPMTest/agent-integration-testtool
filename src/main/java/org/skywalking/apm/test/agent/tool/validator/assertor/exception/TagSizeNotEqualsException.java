@@ -18,7 +18,15 @@
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
 public class TagSizeNotEqualsException extends AssertFailedException {
-    public TagSizeNotEqualsException(int size, int i) {
-        super("");
+    private final int expected;
+    private final int actual;
+
+    public TagSizeNotEqualsException(int expected, int actual) {
+        this.expected = expected;
+        this.actual = actual;
+    }
+
+    @Override public String getCauseMessage() {
+        return String.format("[tag size]: expected=>{%s}, actual=>{%s}\n", expected, actual);
     }
 }

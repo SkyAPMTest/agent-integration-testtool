@@ -17,8 +17,14 @@
 
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
-public class ActualSegmentRefEmptyException extends AssertFailedException {
-    public ActualSegmentRefEmptyException(int size) {
-        super("");
+public class ActualSegmentRefIsEmptyException extends AssertFailedException {
+    private final int expectedSize;
+
+    public ActualSegmentRefIsEmptyException(int expectedSize) {
+        this.expectedSize = expectedSize;
+    }
+
+    @Override public String getCauseMessage() {
+        return String.format("ActualSegmentRefIsEmptyException\nexpected: %d\nactual: %s\n", expectedSize, "Not found");
     }
 }

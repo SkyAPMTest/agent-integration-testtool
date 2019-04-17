@@ -3,12 +3,14 @@ package org.skywalking.apm.test.agent.tool.validator.assertor;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.ActualSegmentItemEmptyException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.SegmentItemNotFoundException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.SegmentSizeNotEqualsException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.ValueAssertFailedException;
 import org.skywalking.apm.test.agent.tool.validator.entity.Segment;
 import org.skywalking.apm.test.agent.tool.validator.entity.SegmentItem;
 import org.skywalking.apm.test.agent.tool.validator.entity.SegmentRef;
 import org.skywalking.apm.test.agent.tool.validator.entity.Span;
-import org.skywalking.apm.test.agent.tool.validator.assertor.exception.ActualSegmentItemEmptyException;
-import org.skywalking.apm.test.agent.tool.validator.assertor.exception.SegmentItemNotEqualsException;
 
 /**
  * Created by xin on 2017/7/15.
@@ -23,8 +25,12 @@ public class SegmentItemsAssert {
         }
 
         for (SegmentItem item : expected) {
-            SegmentItem actualSegmentItem = findSegmentItem(actual, item.applicationCode());
-            assertSegmentSize(item.segmentSize(), actualSegmentItem.segmentSize());
+            SegmentItem actualSegmentItem = findSegmentItem(actual, item);
+            try {
+                assertSegmentSize(item.segmentSize(), actualSegmentItem.segmentSize());
+            } catch (ValueAssertFailedException e) {
+                throw new SegmentSizeNotEqualsException(item.applicationCode(), item.segmentSize(), actualSegmentItem.segmentSize());
+            }
             SegmentAssert.assertEquals(item, actualSegmentItem);
         }
 
@@ -42,7 +48,6 @@ public class SegmentItemsAssert {
                     }
                     SegmentRefAssert.assertEquals(span.refs(), span.actualRefs());
                 }
-
             }
         }
     }
@@ -67,17 +72,17 @@ public class SegmentItemsAssert {
         ExpressParser.parse(expected).assertValue("segment size", actual);
     }
 
-    private static SegmentItem findSegmentItem(List<SegmentItem> actual, String applicationCode) {
+    private static SegmentItem findSegmentItem(List<SegmentItem> actual, SegmentItem expected) {
         if (actual == null) {
-            throw new ActualSegmentItemEmptyException();
+            throw new ActualSegmentItemEmptyException(expected);
         }
 
         for (SegmentItem segmentItem : actual) {
-            if (applicationCode.equals(segmentItem.applicationCode())) {
+            if (expected.applicationCode().equals(segmentItem.applicationCode())) {
                 return segmentItem;
             }
         }
 
-        throw new SegmentItemNotEqualsException(applicationCode);
+        throw new SegmentItemNotFoundException(expected.applicationCode());
     }
 }

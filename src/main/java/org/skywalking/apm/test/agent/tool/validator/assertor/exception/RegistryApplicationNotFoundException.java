@@ -18,7 +18,14 @@
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
 public class RegistryApplicationNotFoundException extends AssertFailedException {
+    private final String applicationCode;
+
     public RegistryApplicationNotFoundException(String applicationCode) {
-        super(String.format("RegistryApplicationNotFoundException\t %s", applicationCode));
+        this.applicationCode = applicationCode;
+    }
+
+    @Override public String getCauseMessage() {
+        return String.format("RegistryApplicationNotFoundException\nexpected: %s\nactual: %s\n", applicationCode,
+            "Not Found");
     }
 }

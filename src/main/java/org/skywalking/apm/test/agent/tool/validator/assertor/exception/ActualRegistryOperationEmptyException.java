@@ -17,8 +17,18 @@
 
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
-public class SegmentItemNotEqualsException extends AssertFailedException {
-    public SegmentItemNotEqualsException(String s) {
-        super("");
+import org.skywalking.apm.test.agent.tool.validator.entity.RegistryOperationName;
+
+public class ActualRegistryOperationEmptyException extends AssertFailedException {
+
+    private final RegistryOperationName registryOperationName;
+
+    public ActualRegistryOperationEmptyException(RegistryOperationName registryOperationName) {
+        this.registryOperationName = registryOperationName;
+    }
+
+    @Override public String getCauseMessage() {
+        return String.format("ActualRegistryOperationEmptyException\nexpected:%s\nactual:%s\n",
+            registryOperationName.operationName(), "Empty");
     }
 }

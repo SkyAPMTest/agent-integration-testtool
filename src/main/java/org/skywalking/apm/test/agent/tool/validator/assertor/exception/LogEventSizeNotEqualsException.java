@@ -18,7 +18,15 @@
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
 public class LogEventSizeNotEqualsException extends AssertFailedException {
-    public LogEventSizeNotEqualsException(int size, int i) {
-        super("");
+    private final int expected;
+    private final int actual;
+
+    public LogEventSizeNotEqualsException(int expected, int actual) {
+        this.expected = expected;
+        this.actual = actual;
+    }
+
+    @Override public String getCauseMessage() {
+        return String.format("[log event size]: expected=>{%d}, actual=>{%d}\n", expected, actual);
     }
 }

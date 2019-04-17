@@ -49,4 +49,10 @@ public class SegmentItemForRead implements SegmentItem {
         }
         return new ArrayList<>(segments);
     }
+
+    @Override public String toString() {
+        StringBuilder message = new StringBuilder(String.format("Segment Item[%s]", applicationCode));
+        message.append(String.format(" - segment size:\t\t%s\n", segmentSize));
+        return message.toString();
+    }
 }

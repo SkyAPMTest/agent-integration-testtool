@@ -17,8 +17,5 @@
 
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
-public class KeyValueNotEqualsException extends AssertFailedException {
-    public KeyValueNotEqualsException(String expected, String actual) {
-        super("");
-    }
+public class KeyValueNotEqualsException extends RuntimeException {
 }

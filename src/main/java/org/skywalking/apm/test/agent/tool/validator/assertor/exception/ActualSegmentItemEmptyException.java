@@ -17,10 +17,17 @@
 
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
+import org.skywalking.apm.test.agent.tool.validator.entity.SegmentItem;
+
 public class ActualSegmentItemEmptyException extends AssertFailedException {
 
-    public ActualSegmentItemEmptyException() {
-        //TODO
-        super("");
+    private final SegmentItem expected;
+
+    public ActualSegmentItemEmptyException(SegmentItem expected) {
+        this.expected = expected;
+    }
+
+    @Override public String getCauseMessage() {
+        return String.format("ActualSegmentItemEmptyException\nexpected: %s\nactual: %s", expected, "Not found");
     }
 }

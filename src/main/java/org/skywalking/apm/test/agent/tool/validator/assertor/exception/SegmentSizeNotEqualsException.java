@@ -17,8 +17,21 @@
 
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
-public class SegmentItemAssertFailedException extends AssertFailedException {
-    public SegmentItemAssertFailedException(SegmentNotFoundException e) {
-        super("");
+public class SegmentSizeNotEqualsException extends AssertFailedException {
+    private final String applicationCode;
+    private final String expected;
+    private final String actual;
+
+    public SegmentSizeNotEqualsException(String applicationCode, String expected, String actual) {
+        this.applicationCode = applicationCode;
+        this.expected = expected;
+        this.actual = actual;
+    }
+
+    @Override public String getCauseMessage() {
+        return String.format("SegmentSizeNotEqualsException:\tService[%s]\nexpected:\t%s\nactual:\t\t%s\n",
+            applicationCode,
+            expected,
+            actual);
     }
 }

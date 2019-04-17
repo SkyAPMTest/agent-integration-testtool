@@ -9,6 +9,7 @@ public abstract class AssertFailedException extends RuntimeException {
     }
 
     protected AssertFailedException(){
-
     }
+
+    public abstract String getCauseMessage();
 }

@@ -20,7 +20,26 @@ package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 import org.skywalking.apm.test.agent.tool.validator.entity.Span;
 
 public class SpanAssertFailedException extends AssertFailedException {
-    public SpanAssertFailedException(AssertFailedException e, Span exceptedSpan, Span actualSpan) {
-        super("");
+    private final AssertFailedException failedCause;
+    private final Span exceptedSpan;
+    private final Span actualSpan;
+
+    public SpanAssertFailedException(AssertFailedException failedCause, Span exceptedSpan, Span actualSpan) {
+        this.failedCause = failedCause;
+        this.exceptedSpan = exceptedSpan;
+        this.actualSpan = actualSpan;
+    }
+
+    public Span getExceptedSpan() {
+        return exceptedSpan;
+    }
+
+    public Span getActualSpan() {
+        return actualSpan;
+    }
+
+    @Override
+    public String getCauseMessage() {
+        return failedCause.getCauseMessage();
     }
 }

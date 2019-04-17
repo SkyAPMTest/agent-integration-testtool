@@ -18,7 +18,14 @@
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
 public class RegistryOperationNameNotFoundException extends AssertFailedException {
+    private final String operationName;
+
     public RegistryOperationNameNotFoundException(String operationName) {
-        super(String.format("RegistryOperationNameNotFoundException %s", operationName));
+        this.operationName = operationName;
+    }
+
+    @Override public String getCauseMessage() {
+        return String.format("RegistryOperationNameNotFoundException\nexpected: %s\nactual: %s\n", operationName,
+            "Not found");
     }
 }

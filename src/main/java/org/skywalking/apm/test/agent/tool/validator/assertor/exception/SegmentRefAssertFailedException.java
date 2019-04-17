@@ -17,8 +17,20 @@
 
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
-public class SizeAssertFailedException extends AssertFailedException {
-    public SizeAssertFailedException(String fieldSize, int expectedSize, int acutalSize) {
-        super("");
+import org.skywalking.apm.test.agent.tool.validator.entity.SegmentRef;
+
+public class SegmentRefAssertFailedException extends AssertFailedException {
+    private final ValueAssertFailedException e;
+    private final SegmentRef expected;
+    private final SegmentRef actual;
+
+    public SegmentRefAssertFailedException(ValueAssertFailedException e, SegmentRef expected, SegmentRef actual) {
+        this.e = e;
+        this.expected = expected;
+        this.actual = actual;
+    }
+
+    @Override public String getCauseMessage() {
+        return e.getCauseMessage();
     }
 }

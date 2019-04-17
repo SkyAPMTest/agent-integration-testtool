@@ -21,7 +21,19 @@ import org.skywalking.apm.test.agent.tool.validator.assertor.exception.SpanAsser
 import org.skywalking.apm.test.agent.tool.validator.entity.Segment;
 
 public class SegmentPredictionFailedCause {
-    public SegmentPredictionFailedCause(SpanAssertFailedException e, Segment acutalSegment) {
+    private final Segment actualSegment;
+    private final SpanAssertFailedException spanAssertFailedCause;
 
+    public SegmentPredictionFailedCause(SpanAssertFailedException spanAssertFailedCause, Segment actualSegment) {
+        this.spanAssertFailedCause = spanAssertFailedCause;
+        this.actualSegment = actualSegment;
+    }
+
+    public Segment getActualSegment() {
+        return actualSegment;
+    }
+
+    public SpanAssertFailedException getSpanAssertFailedCause() {
+        return spanAssertFailedCause;
     }
 }

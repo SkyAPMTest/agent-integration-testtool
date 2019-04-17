@@ -18,7 +18,16 @@
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
 public class SpanSizeNotEqualsException extends AssertFailedException {
-    public SpanSizeNotEqualsException() {
-        super(null);
+
+    private final int expected;
+    private final int actual;
+
+    public SpanSizeNotEqualsException(int expected, int actual) {
+        this.expected = expected;
+        this.actual = actual;
+    }
+
+    @Override public String getCauseMessage() {
+        return String.format("[span size]: expected=>{%s}, actual=>{%s}\n", expected, actual);
     }
 }

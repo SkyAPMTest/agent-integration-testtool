@@ -17,8 +17,14 @@
 
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
-public class SpanAttributeValueAssertFailedException extends AssertFailedException {
-    public SpanAttributeValueAssertFailedException() {
-        super("");
+public class SegmentItemNotFoundException extends AssertFailedException {
+    private final String applicationCode;
+
+    public SegmentItemNotFoundException(String applicationCode) {
+        this.applicationCode = applicationCode;
+    }
+
+    @Override public String getCauseMessage() {
+        return String.format("SegmentItemNotFoundException\nexpected: %s\nactual: %s", applicationCode, "Not Found");
     }
 }
