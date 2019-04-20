@@ -15,25 +15,17 @@
  *  limitations under the License.
  */
 
-package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
+package org.skywalking.apm.test.agent.tool.validator.exception;
 
-import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
+public class IllegalDataFileException extends AssertFailedException {
+    private final String fileName;
 
-public class SegmentSizeNotEqualsException extends AssertFailedException {
-    private final String applicationCode;
-    private final String expected;
-    private final String actual;
-
-    public SegmentSizeNotEqualsException(String applicationCode, String expected, String actual) {
-        this.applicationCode = applicationCode;
-        this.expected = expected;
-        this.actual = actual;
+    public IllegalDataFileException(String fileName) {
+        this.fileName = fileName;
     }
 
-    @Override public String getCauseMessage() {
-        return String.format("SegmentSizeNotEqualsException:\t%s\nexpected:\t%s\nactual:\t\t%s\n",
-            applicationCode,
-            expected,
-            actual);
+    @Override
+    public String getCauseMessage() {
+        return String.format("IllegalDataFileException %s ");
     }
 }

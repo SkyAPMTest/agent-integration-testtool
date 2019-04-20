@@ -17,6 +17,8 @@
 
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
+import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
+
 public class TagValueNotEqualsException extends AssertFailedException {
     private final String tagKey;
     private final String expected;

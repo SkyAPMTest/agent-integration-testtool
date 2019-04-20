@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
+import org.skywalking.apm.test.agent.tool.validator.exception.IllegalDataFileException;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -15,11 +16,11 @@ public interface Data {
     List<SegmentItem> segmentItems();
 
     class Loader {
-        public static Data loadData(File file) {
+        public static Data loadData(String fileName, File file) {
             try {
                 return loadData(new FileInputStream(file));
             } catch (Exception e) {
-                throw new RuntimeException("Failed to parse file[" + file.getAbsolutePath() + "]", e);
+                throw new IllegalDataFileException(fileName);
             }
         }
 

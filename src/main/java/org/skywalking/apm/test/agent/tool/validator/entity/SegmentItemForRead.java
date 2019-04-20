@@ -51,7 +51,7 @@ public class SegmentItemForRead implements SegmentItem {
     }
 
     @Override public String toString() {
-        StringBuilder message = new StringBuilder(String.format("Segment Item[%s]", applicationCode));
+        StringBuilder message = new StringBuilder(String.format("\nSegment Item[%s]", applicationCode));
         message.append(String.format(" - segment size:\t\t%s\n", segmentSize));
         return message.toString();
     }

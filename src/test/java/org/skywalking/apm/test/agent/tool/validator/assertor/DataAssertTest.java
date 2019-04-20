@@ -28,7 +28,7 @@ public class DataAssertTest {
         File actualData = new File(DataAssertTest.class.getResource("/actualData.yaml").getFile());
         File expectedData = new File(DataAssertTest.class.getResource("/expectedData.yaml").getFile());
 
-        DataAssert.assertEquals(Data.Loader.loadData(expectedData), Data.Loader.loadData(actualData));
+        DataAssert.assertEquals(Data.Loader.loadData("expectedData.yaml", expectedData), Data.Loader.loadData("actualData.yaml", actualData));
     }
 
 }

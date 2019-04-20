@@ -18,16 +18,17 @@
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
 import org.skywalking.apm.test.agent.tool.validator.entity.RegistryOperationName;
+import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
 
-public class RegistryOperationNamesNotFoundException extends AssertFailedException {
+public class RegistryOperationNamesOfApplicationNotFoundException extends AssertFailedException {
     private final RegistryOperationName applicationCode;
 
-    public RegistryOperationNamesNotFoundException(RegistryOperationName applicationCode) {
+    public RegistryOperationNamesOfApplicationNotFoundException(RegistryOperationName applicationCode) {
         this.applicationCode = applicationCode;
     }
 
     @Override public String getCauseMessage() {
-        return String.format("RegistryOperationNamesNotFoundException %s\nexpected: %s\nactual: %s\n",
-            applicationCode.applicationCode(), applicationCode.operationName(), "Not Found");
+        return String.format("RegistryOperationNamesOfApplicationNotFoundException %s\nexpected: %s\nactual: %s\n",
+            applicationCode.applicationCode(), applicationCode.operationName(), "NOT FOUND");
     }
 }

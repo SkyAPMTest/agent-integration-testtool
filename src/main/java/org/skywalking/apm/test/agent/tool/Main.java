@@ -7,7 +7,7 @@ import org.skywalking.apm.test.agent.tool.report.entity.Report;
 import org.skywalking.apm.test.agent.tool.report.entity.TestCase;
 import org.skywalking.apm.test.agent.tool.report.entity.TestCaseDesc;
 import org.skywalking.apm.test.agent.tool.validator.assertor.DataAssert;
-import org.skywalking.apm.test.agent.tool.validator.assertor.exception.AssertFailedException;
+import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
 import org.skywalking.apm.test.agent.tool.validator.entity.Data;
 
 public class Main {
@@ -34,7 +34,8 @@ public class Main {
                 File expectedData = new File(casePath, "expectedData.yaml");
                 if (actualData.exists() && expectedData.exists()) {
                     try {
-                        DataAssert.assertEquals(Data.Loader.loadData(expectedData), Data.Loader.loadData(actualData));
+                        DataAssert.assertEquals(Data.Loader.loadData("expectedData.yaml", expectedData),
+                            Data.Loader.loadData("actualData.yaml", actualData));
                         testCase.testedSuccessfully();
                     } catch (AssertFailedException e) {
                         logger.error("\nassert failed.\n{}\n", e.getCauseMessage());

@@ -18,6 +18,7 @@
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
 import org.skywalking.apm.test.agent.tool.validator.entity.Span;
+import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
 
 public class SpanAssertFailedException extends AssertFailedException {
     private final AssertFailedException failedCause;

@@ -1,8 +1,10 @@
 package org.skywalking.apm.test.agent.tool.validator.assertor;
 
 import java.util.List;
-import org.skywalking.apm.test.agent.tool.validator.entity.RegistryApplication;
 import org.skywalking.apm.test.agent.tool.validator.assertor.exception.RegistryApplicationNotFoundException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.RegistryApplicationSizeNotEqualsException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.ValueAssertFailedException;
+import org.skywalking.apm.test.agent.tool.validator.entity.RegistryApplication;
 
 public class ApplicationAssert {
     public static void assertEquals(List<RegistryApplication> expected,
@@ -14,7 +16,11 @@ public class ApplicationAssert {
 
         for (RegistryApplication application : expected) {
             RegistryApplication actualApplication = getMatchApplication(actual, application);
-            ExpressParser.parse(application.expressValue()).assertValue("registry application", actualApplication.expressValue());
+            try {
+                ExpressParser.parse(application.expressValue()).assertValue("registry application", actualApplication.expressValue());
+            } catch (ValueAssertFailedException e) {
+                throw new RegistryApplicationSizeNotEqualsException(application.applicationCode(), e);
+            }
         }
     }
 
