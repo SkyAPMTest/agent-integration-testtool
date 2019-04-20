@@ -7,8 +7,8 @@ import org.skywalking.apm.test.agent.tool.report.entity.Report;
 import org.skywalking.apm.test.agent.tool.report.entity.TestCase;
 import org.skywalking.apm.test.agent.tool.report.entity.TestCaseDesc;
 import org.skywalking.apm.test.agent.tool.validator.assertor.DataAssert;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.AssertFailedException;
 import org.skywalking.apm.test.agent.tool.validator.entity.Data;
-import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
 
 public class Main {
     private static Logger logger = LogManager.getLogger(Main.class);
@@ -37,7 +37,8 @@ public class Main {
                         DataAssert.assertEquals(Data.Loader.loadData(expectedData), Data.Loader.loadData(actualData));
                         testCase.testedSuccessfully();
                     } catch (AssertFailedException e) {
-                        logger.error("assert failed.\n{}", e.getMessage());
+                        logger.error("\nassert failed.\n{}\n", e.getCauseMessage());
+
                     }
                 } else {
                     logger.error("assert failed. because actual data {} and expected data {}", actualData.exists() ? "founded" : "not founded", actualData.exists() ? "founded" : "not founded");

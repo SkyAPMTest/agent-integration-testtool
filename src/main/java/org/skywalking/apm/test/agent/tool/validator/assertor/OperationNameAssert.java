@@ -2,7 +2,9 @@ package org.skywalking.apm.test.agent.tool.validator.assertor;
 
 import java.util.List;
 import org.skywalking.apm.test.agent.tool.validator.entity.RegistryOperationName;
-import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.ActualRegistryOperationEmptyException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.RegistryOperationNameNotFoundException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.RegistryOperationNamesNotFoundException;
 
 public class OperationNameAssert {
     public static void assertEquals(List<RegistryOperationName> expected, List<RegistryOperationName> actual) {
@@ -11,11 +13,7 @@ public class OperationNameAssert {
         }
 
         for (RegistryOperationName operationName : expected) {
-            RegistryOperationName actualOperationName = findActualRegistryOperationName(actual, operationName.applicationCode());
-            if (actualOperationName == null) {
-                throw new AssertFailedException("assert application[" + operationName.applicationCode() + "] operationName: \n expected:" + operationName.operationName() + "\n actual: not found");
-            }
-
+            RegistryOperationName actualOperationName = findActualRegistryOperationName(actual, operationName);
             assertOperationEquals(operationName.operationName(), actualOperationName.operationName());
         }
     }
@@ -23,22 +21,23 @@ public class OperationNameAssert {
     private static void assertOperationEquals(List<String> expectedOperationName, List<String> actualOperationName) {
         for (String operationName : expectedOperationName) {
             if (!actualOperationName.contains(operationName)) {
-                throw new AssertFailedException("assert operationName: \n expected:" + operationName + "\n actual: not found");
+                throw new RegistryOperationNameNotFoundException(operationName);
             }
         }
     }
 
     private static RegistryOperationName findActualRegistryOperationName(
-        List<RegistryOperationName> actual, String applicationCode) {
+        List<RegistryOperationName> actual, RegistryOperationName registryOperationName) {
         if (actual == null) {
-            return null;
+            throw new ActualRegistryOperationEmptyException(registryOperationName);
         }
 
         for (RegistryOperationName operationName : actual) {
-            if (operationName.applicationCode().equals(applicationCode)) {
+            if (operationName.applicationCode().equals(registryOperationName.applicationCode())) {
                 return operationName;
             }
         }
-        return null;
+
+        throw new RegistryOperationNamesNotFoundException(registryOperationName);
     }
 }
