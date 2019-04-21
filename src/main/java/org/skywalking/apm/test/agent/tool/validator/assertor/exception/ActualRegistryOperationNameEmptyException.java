@@ -17,23 +17,19 @@
 
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
+import org.skywalking.apm.test.agent.tool.validator.entity.RegistryOperationName;
 import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
 
-public class SegmentSizeNotEqualsException extends AssertFailedException {
-    private final String applicationCode;
-    private final String expected;
-    private final String actual;
+public class ActualRegistryOperationNameEmptyException extends AssertFailedException {
 
-    public SegmentSizeNotEqualsException(String applicationCode, String expected, String actual) {
-        this.applicationCode = applicationCode;
-        this.expected = expected;
-        this.actual = actual;
+    private final RegistryOperationName registryOperationName;
+
+    public ActualRegistryOperationNameEmptyException(RegistryOperationName registryOperationName) {
+        this.registryOperationName = registryOperationName;
     }
 
     @Override public String getCauseMessage() {
-        return String.format("SegmentSizeNotEqualsException:\t%s\nexpected:\t%s\nactual:\t\t%s\n",
-            applicationCode,
-            expected,
-            actual);
+        return String.format("ActualRegistryOperationNameEmptyException\nexpected:%s\nactual:%s\n",
+            registryOperationName.operationName(), "Empty");
     }
 }

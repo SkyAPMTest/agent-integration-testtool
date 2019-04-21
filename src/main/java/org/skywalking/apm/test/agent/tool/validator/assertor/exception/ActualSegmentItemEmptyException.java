@@ -18,6 +18,7 @@
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
 import org.skywalking.apm.test.agent.tool.validator.entity.SegmentItem;
+import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
 
 public class ActualSegmentItemEmptyException extends AssertFailedException {
 
@@ -28,6 +29,6 @@ public class ActualSegmentItemEmptyException extends AssertFailedException {
     }
 
     @Override public String getCauseMessage() {
-        return String.format("ActualSegmentItemEmptyException\nexpected: %s\nactual: %s", expected, "Not found");
+        return String.format("ActualSegmentItemEmptyException\nexpected: %s\nactual: %s", expected, "Empty");
     }
 }

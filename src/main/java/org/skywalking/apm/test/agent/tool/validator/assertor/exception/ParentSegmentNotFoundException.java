@@ -17,6 +17,8 @@
 
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
+import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
+
 public class ParentSegmentNotFoundException extends AssertFailedException {
 
     private final String express;
@@ -26,6 +28,6 @@ public class ParentSegmentNotFoundException extends AssertFailedException {
     }
 
     @Override public String getCauseMessage() {
-        return String.format("ParentSegmentNotFoundException\nexpected: %s\nactual: %s\n", express, "Not Found");
+        return String.format("ParentSegmentNotFoundException\nexpected: %s\nactual: %s\n", express, "NOT FOUND");
     }
 }

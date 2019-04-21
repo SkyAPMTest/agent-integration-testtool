@@ -145,10 +145,9 @@ public class SegmentForRead implements Segment {
         @Override public String toString() {
             StringBuilder actualSegmentRef = new StringBuilder("\nSegmentRef:\n");
             return actualSegmentRef.append(String.format(" - entryServiceName:\t\t%s\n", entryServiceName()))
-                .append(String.format(" - networkAddress:\t\t\t%s\n", "10.1.12.1"))
+                .append(String.format(" - networkAddress:\t\t\t%s\n", networkAddress()))
                 .append(String.format(" - parentServiceName:\t\t%s\n", parentServiceName()))
                 .append(String.format(" - parentSpanId:\t\t\t%s\n", parentSpanId()))
-                .append(String.format(" - entryServiceName:\t\t%s\n", entryServiceName()))
                 .append(String.format(" - parentTraceSegmentId:\t%s\n", parentTraceSegmentId()))
                 .append(String.format(" - refType:\t\t\t\t\t%s", refType())).toString();
         }

@@ -17,6 +17,8 @@
 
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
+import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
+
 public class LogEventSizeNotEqualsException extends AssertFailedException {
     private final int expected;
     private final int actual;

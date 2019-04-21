@@ -20,6 +20,7 @@ package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 import java.util.List;
 import org.skywalking.apm.test.agent.tool.validator.assertor.SegmentRefAssertFailedCause;
 import org.skywalking.apm.test.agent.tool.validator.entity.SegmentRef;
+import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
 
 public class SegmentRefNotFoundException extends AssertFailedException {
     private final SegmentRef expected;
@@ -40,14 +41,13 @@ public class SegmentRefNotFoundException extends AssertFailedException {
 
             StringBuilder actualSegmentRef = new StringBuilder(String.format("\nSegmentRef:\t%s\n", reason));
             actualSegmentRef.append(String.format(" - entryServiceName:\t\t%s\n", actual.entryServiceName()))
-                .append(String.format(" - networkAddress:\t\t\t%s\n", "10.1.12.1"))
+                .append(String.format(" - networkAddress:\t\t\t%s\n", actual.networkAddress()))
                 .append(String.format(" - parentServiceName:\t\t%s\n", actual.parentServiceName()))
                 .append(String.format(" - parentSpanId:\t\t\t%s\n", actual.parentSpanId()))
-                .append(String.format(" - entryServiceName:\t\t%s\n", actual.entryServiceName()))
                 .append(String.format(" - parentTraceSegmentId:\t%s\n", actual.parentTraceSegmentId()))
                 .append(String.format(" - refType:\t\t\t\t\t%s", actual.refType())).toString();
 
-            actualMessage.append(String.format("%s\n", actualSegmentRef, reason));
+            actualMessage.append(String.format("%s\n", actualSegmentRef));
         }
 
         return String.format("SegmentRefNotFoundException\nexpected: %s\nactual: %s\n", expected, actualMessage);

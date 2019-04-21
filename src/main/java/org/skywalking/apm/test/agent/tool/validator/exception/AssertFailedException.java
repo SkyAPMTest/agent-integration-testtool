@@ -15,20 +15,18 @@
  *  limitations under the License.
  */
 
-package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
+package org.skywalking.apm.test.agent.tool.validator.exception;
 
-import org.skywalking.apm.test.agent.tool.validator.entity.RegistryOperationName;
-
-public class ActualRegistryOperationEmptyException extends AssertFailedException {
-
-    private final RegistryOperationName registryOperationName;
-
-    public ActualRegistryOperationEmptyException(RegistryOperationName registryOperationName) {
-        this.registryOperationName = registryOperationName;
+/**
+ * Created by xin on 2017/7/15.
+ */
+public abstract class AssertFailedException extends RuntimeException {
+    protected AssertFailedException(String message) {
+        super(message);
     }
 
-    @Override public String getCauseMessage() {
-        return String.format("ActualRegistryOperationEmptyException\nexpected:%s\nactual:%s\n",
-            registryOperationName.operationName(), "Empty");
+    protected AssertFailedException(){
     }
+
+    public abstract String getCauseMessage();
 }

@@ -1,8 +1,10 @@
 package org.skywalking.apm.test.agent.tool.validator.assertor;
 
 import java.util.List;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.RegistryInstanceOfApplicationNotFoundException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.RegistryInstanceSizeNotEqualsException;
+import org.skywalking.apm.test.agent.tool.validator.assertor.exception.ValueAssertFailedException;
 import org.skywalking.apm.test.agent.tool.validator.entity.RegistryInstance;
-import org.skywalking.apm.test.agent.tool.validator.assertor.exception.RegistryInstanceNotFoundException;
 
 /**
  * Created by xin on 2017/7/15.
@@ -16,8 +18,12 @@ public class InstanceAssert {
 
         for (RegistryInstance instance : expected) {
             RegistryInstance actualInstance = getMatchApplication(actual, instance);
-            ExpressParser.parse(actualInstance.expressValue()).assertValue(String.format("The registry instance of %s",
-                instance.applicationCode()), actualInstance.expressValue());
+            try {
+                ExpressParser.parse(actualInstance.expressValue()).assertValue(String.format("The registry instance of %s",
+                    instance.applicationCode()), actualInstance.expressValue());
+            } catch (ValueAssertFailedException e) {
+                throw new RegistryInstanceSizeNotEqualsException(instance.applicationCode(), e);
+            }
         }
     }
 
@@ -28,6 +34,6 @@ public class InstanceAssert {
                 return registryApplication;
             }
         }
-        throw new RegistryInstanceNotFoundException(application.applicationCode());
+        throw new RegistryInstanceOfApplicationNotFoundException(application.applicationCode());
     }
 }

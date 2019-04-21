@@ -3,7 +3,7 @@ package org.skywalking.apm.test.agent.tool.validator.assertor;
 import java.util.ArrayList;
 import java.util.List;
 import org.skywalking.apm.test.agent.tool.validator.assertor.exception.ActualSegmentRefIsEmptyException;
-import org.skywalking.apm.test.agent.tool.validator.assertor.exception.AssertFailedException;
+import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
 import org.skywalking.apm.test.agent.tool.validator.assertor.exception.KeyValueNotEqualsException;
 import org.skywalking.apm.test.agent.tool.validator.assertor.exception.LogEventKeyNotEqualsException;
 import org.skywalking.apm.test.agent.tool.validator.assertor.exception.LogEventSizeNotEqualsException;

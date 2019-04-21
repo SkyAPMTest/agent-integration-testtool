@@ -18,6 +18,7 @@
 package org.skywalking.apm.test.agent.tool.validator.assertor.exception;
 
 import org.skywalking.apm.test.agent.tool.validator.entity.SegmentRef;
+import org.skywalking.apm.test.agent.tool.validator.exception.AssertFailedException;
 
 public class SegmentRefAssertFailedException extends AssertFailedException {
     private final ValueAssertFailedException e;
