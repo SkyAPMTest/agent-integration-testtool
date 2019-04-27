@@ -32,7 +32,12 @@ public interface Data {
             Representer representer = new Representer();
             representer.getPropertyUtils().setSkipMissingProperties(true);
             Yaml yaml = new Yaml(constructor, representer);
-            return yaml.loadAs(inputStream, DataForRead.class);
+            Data result = yaml.loadAs(inputStream, DataForRead.class);
+            if (result == null) {
+                throw new RuntimeException();
+            } else{
+                return result;
+            }
         }
     }
 }

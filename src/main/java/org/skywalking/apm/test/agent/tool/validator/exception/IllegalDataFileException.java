@@ -26,6 +26,6 @@ public class IllegalDataFileException extends AssertFailedException {
 
     @Override
     public String getCauseMessage() {
-        return String.format("IllegalDataFileException %s ");
+        return String.format("IllegalDataFileException %s ", fileName);
     }
 }
